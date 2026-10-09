@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title> Eco-Friendly Products Store</title>
+  <title>Eco-Friendly Products Store – Certified Sustainable Living Essentials</title>
   <meta name="description" content="Shop certified sustainable, reusable bamboo bottles, recycled notebooks, bento lunch boxes, and organic cotton tote bags. 100% plastic-free packaging.">
   
   <!-- Google Fonts: Outfit (Display) & Plus Jakarta Sans (Body) -->
@@ -143,10 +143,10 @@
             <i data-lucide="sprout" class="w-6 h-6 text-leaf-light"></i>
           </div>
           <div class="flex flex-col">
-            <span class="text-2xl font-bold tracking-tight text-forest flex items-center">
-              Eco<span class="text-leaf">Nest</span>
+            <span class="text-xl sm:text-2xl font-extrabold tracking-tight text-forest flex items-center">
+              Eco-Friendly <span class="text-leaf ml-1.5">Products Store</span>
             </span>
-            <span class="text-[9px] uppercase tracking-widest text-earth font-bold -mt-1">Sustainable Living</span>
+            <span class="text-[9px] uppercase tracking-widest text-earth font-bold -mt-0.5">Sustainable & Zero-Waste Essentials</span>
           </div>
         </a>
 
@@ -575,7 +575,7 @@
 
         <!-- Live matching indicator -->
         <div class="text-xs text-charcoal-muted flex items-center justify-between pt-1">
-          <span>Showing <strong id="visible-count" class="text-forest font-bold">15</strong> sustainable products</span>
+          <span>Showing <strong id="visible-count" class="text-forest font-bold">11</strong> sustainable products</span>
           <span id="active-filter-tag" class="text-leaf font-medium">All Categories</span>
         </div>
 
@@ -807,10 +807,10 @@
             <div class="w-8 h-8 rounded-full bg-leaf text-white flex items-center justify-center shadow">
               <i data-lucide="sprout" class="w-5 h-5"></i>
             </div>
-            <span class="text-xl font-bold tracking-tight text-white">EcoNest</span>
+            <span class="text-lg font-bold tracking-tight text-white">Eco-Friendly Products Store</span>
           </div>
           <p class="text-sage/80 leading-relaxed text-xs max-w-sm">
-            EcoNest empowers conscious lifestyles with practical, durable, and certified sustainable products made from renewable bamboo, recycled paper, and stainless steel.
+            Eco-Friendly Products Store empowers conscious lifestyles with practical, durable, and certified sustainable products made from renewable bamboo, recycled paper, and stainless steel.
           </p>
           <div class="pt-2 flex items-center space-x-3 text-sage">
             <a href="#" class="hover:text-white transition-colors" aria-label="Instagram"><i data-lucide="instagram" class="w-4 h-4"></i></a>
@@ -867,7 +867,7 @@
       </div>
 
       <div class="pt-6 flex flex-col sm:flex-row items-center justify-between text-[11px] text-sage/70 gap-3">
-        <p>© 2026 EcoNest India Pvt. Ltd. All rights reserved.</p>
+        <p>© 2026 Eco-Friendly Products Store Pvt. Ltd. All rights reserved.</p>
         <div class="flex gap-4">
           <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
           <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
@@ -1359,7 +1359,7 @@
           <div>
             <div class="flex items-center gap-1.5 text-forest font-bold text-lg">
               <i data-lucide="sprout" class="w-5 h-5 text-leaf"></i>
-              <span>EcoNest Store</span>
+              <span>Eco-Friendly Products Store</span>
             </div>
             <p class="text-[11px] text-charcoal-muted mt-0.5">Sector 14, Green Tech Park, Bengaluru, KA - 560001</p>
             <p class="text-[11px] text-charcoal-muted">GSTIN: 29AAAAE1234F1Z5 • support@econeststore.in</p>
@@ -2583,13 +2583,13 @@
         doc.rect(0, 0, 210, 38, 'F');
 
         doc.setTextColor(255, 255, 255);
-        doc.setFontSize(22);
+        doc.setFontSize(20);
         doc.setFont('helvetica', 'bold');
-        doc.text("EcoNest", 14, 18);
+        doc.text("Eco-Friendly Products Store", 14, 18);
 
         doc.setFontSize(9);
         doc.setFont('helvetica', 'normal');
-        doc.text("ECO-FRIENDLY PRODUCTS STORE • SUSTAINABLE LIVING", 14, 25);
+        doc.text("CERTIFIED SUSTAINABLE LIVING ESSENTIALS • 100% PLASTIC-FREE PACKAGING", 14, 25);
         doc.text("Sector 14, Green Tech Park, Bengaluru, KA - 560001 | support@econeststore.in", 14, 31);
 
         doc.setFontSize(16);
@@ -2699,12 +2699,12 @@
         doc.setFontSize(8);
         doc.setTextColor(27, 67, 50);
         doc.setFont('helvetica', 'bold');
-        doc.text("Thank you for choosing sustainable, plastic-free alternatives!", 105, 277, { align: 'center' });
+        doc.text("Thank you for choosing Eco-Friendly Products Store! Together we save the planet.", 105, 277, { align: 'center' });
         doc.setFont('helvetica', 'normal');
         doc.setTextColor(100, 116, 139);
-        doc.text("EcoNest Returns & Care: returns@econeststore.in | 7-day hassle-free exchange on manufacturing defects.", 105, 282, { align: 'center' });
+        doc.text("Customer Care: support@econeststore.in | 7-day hassle-free exchange on manufacturing defects.", 105, 282, { align: 'center' });
 
-        doc.save(`EcoNest-Invoice-${currentOrderData.orderId}.pdf`);
+        doc.save(`Invoice-${currentOrderData.orderId}.pdf`);
         showToast("PDF Downloaded", "Official tax invoice PDF has been saved.", "download");
       } catch (err) {
         console.error("PDF generation failed:", err);
