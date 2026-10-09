@@ -1,0 +1,2725 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eco-Friendly Products Store</title>
+  <!-- Google Fonts: Inter & Outfit for clean modern eco-friendly branding -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <!-- jsPDF and AutoTable for professional PDF invoice generation -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            forest: {
+              DEFAULT: '#1B4332',
+              dark: '#143326',
+              light: '#255a43'
+            },
+            leaf: {
+              DEFAULT: '#40916C',
+              light: '#52b788',
+              hover: '#2d6a4f'
+            },
+            sage: {
+              DEFAULT: '#D8E8D5',
+              soft: '#EAF3E8',
+              border: '#c2dac0'
+            },
+            cream: {
+              DEFAULT: '#FAF9F2',
+              card: '#FFFFFF',
+              dark: '#F3F1E7'
+            },
+            earth: {
+              DEFAULT: '#8B6F47',
+              light: '#A68A62'
+            },
+            charcoal: {
+              DEFAULT: '#2D3748',
+              muted: '#64748B'
+            }
+          },
+          fontFamily: {
+            heading: ['Outfit', 'sans-serif'],
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #FAF9F2;
+      color: #2D3748;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    
+    h1, h2, h3, h4, h5, h6, .brand-font {
+      font-family: 'Outfit', sans-serif;
+    }
+
+    /* Custom scrollbar for eco aesthetic */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #FAF9F2;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #c2dac0;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #40916C;
+    }
+
+    /* Subtle float animation for leaves in hero */
+    @keyframes float-gentle {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-10px) rotate(4deg); }
+    }
+    .animate-float {
+      animation: float-gentle 6s ease-in-out infinite;
+    }
+
+    /* Print styling strictly for the invoice section */
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      #printable-invoice, #printable-invoice * {
+        visibility: visible;
+      }
+      #printable-invoice {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        margin: 0;
+        padding: 20px;
+        background: white;
+      }
+      .no-print {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-leaf selection:text-white">
+
+  <!-- Top Eco Announcement Bar -->
+  <aside class="bg-forest text-sage text-xs sm:text-sm py-2 px-4 text-center font-medium tracking-wide flex items-center justify-center gap-2 relative z-50">
+    <span>🌍</span>
+    <span><strong>Make Sustainable Choices</strong> — Free Delivery on Orders Above ₹999 across India!</span>
+    <span class="hidden md:inline bg-forest-light text-white text-[11px] px-2 py-0.5 rounded-full border border-sage/30">100% Plastic Free Packing</span>
+  </aside>
+
+  <!-- Sticky Navbar -->
+  <header class="sticky top-0 z-40 bg-cream/95 backdrop-blur-md border-b border-sage-border/60 transition-all shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        
+        <!-- Brand Logo -->
+        <a href="#hero" class="flex items-center gap-2 group focus:outline-none focus:ring-2 focus:ring-leaf rounded-lg p-1">
+          <div class="w-10 h-10 rounded-full bg-forest text-cream flex items-center justify-center shadow-md group-hover:scale-105 transition-transform duration-300">
+            <i data-lucide="sprout" class="w-6 h-6 text-leaf-light"></i>
+          </div>
+          <div class="flex flex-col">
+            <span class="text-2xl font-bold tracking-tight text-forest flex items-center">
+              Eco<span class="text-leaf">Nest</span>
+            </span>
+            <span class="text-[10px] uppercase tracking-widest text-earth font-semibold -mt-1">Sustainable Living</span>
+          </div>
+        </a>
+
+        <!-- Desktop Navigation Links -->
+        <nav class="hidden md:flex items-center space-x-7 text-sm font-medium text-charcoal" aria-label="Main Navigation">
+          <a href="#hero" class="hover:text-leaf transition-colors py-1">Home</a>
+          <a href="#catalog" class="hover:text-leaf transition-colors py-1" onclick="filterByCategory('all')">Shop All</a>
+          <a href="#categories-section" class="hover:text-leaf transition-colors py-1">Categories</a>
+          <a href="#about-section" class="hover:text-leaf transition-colors py-1">About Us</a>
+          <a href="#reviews-section" class="hover:text-leaf transition-colors py-1">Reviews</a>
+          <a href="#footer" class="hover:text-leaf transition-colors py-1">Contact</a>
+        </nav>
+
+        <!-- Search Bar & Actions -->
+        <div class="flex items-center space-x-3 sm:space-x-4">
+          <!-- Live Search Bar -->
+          <div class="relative hidden sm:block w-48 lg:w-64">
+            <input 
+              type="text" 
+              id="global-search-input" 
+              placeholder="Search eco products..." 
+              class="w-full pl-9 pr-4 py-2 text-xs rounded-full border border-sage-border bg-white/90 focus:outline-none focus:ring-2 focus:ring-leaf focus:border-transparent transition-all shadow-sm"
+              oninput="handleSearch(this.value)"
+            >
+            <i data-lucide="search" class="w-4 h-4 text-charcoal-muted absolute left-3 top-2.5"></i>
+          </div>
+
+          <!-- Wishlist Button -->
+          <button 
+            onclick="toggleWishlistDrawer()" 
+            class="p-2 text-charcoal hover:text-leaf relative rounded-full hover:bg-sage-soft transition-colors"
+            title="Wishlist"
+            aria-label="Wishlist items"
+          >
+            <i data-lucide="heart" class="w-5 h-5"></i>
+            <span id="wishlist-badge" class="absolute -top-1 -right-1 bg-earth text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center hidden">0</span>
+          </button>
+
+          <!-- Cart Drawer Toggle Button -->
+          <button 
+            id="cart-toggle-btn"
+            onclick="toggleCartDrawer(true)" 
+            class="flex items-center gap-2 bg-forest hover:bg-forest-light text-white px-3.5 py-2 rounded-full font-medium text-sm transition-all shadow-md active:scale-95 focus:outline-none focus:ring-2 focus:ring-leaf focus:ring-offset-2"
+            aria-label="View Shopping Cart"
+          >
+            <div class="relative">
+              <i data-lucide="shopping-bag" class="w-4 h-4 text-sage"></i>
+              <span id="cart-badge" class="absolute -top-2 -right-2 bg-leaf-light text-forest text-[11px] font-extrabold w-4 h-4 rounded-full flex items-center justify-center shadow">0</span>
+            </div>
+            <span class="hidden sm:inline font-semibold tracking-wide">Cart</span>
+            <span id="cart-nav-total" class="hidden sm:inline text-xs text-sage border-l border-forest-light pl-2">₹0</span>
+          </button>
+
+          <!-- Mobile Hamburger Menu Button -->
+          <button 
+            onclick="toggleMobileMenu()" 
+            class="p-2 md:hidden text-forest hover:bg-sage-soft rounded-lg focus:outline-none"
+            aria-label="Toggle Navigation Menu"
+          >
+            <i data-lucide="menu" class="w-6 h-6"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Navigation Drawer -->
+    <div id="mobile-menu" class="hidden md:hidden bg-cream border-b border-sage-border px-4 pt-3 pb-6 space-y-3">
+      <div class="relative mb-3">
+        <input 
+          type="text" 
+          placeholder="Search eco bottles, bags, boxes..." 
+          class="w-full pl-9 pr-4 py-2.5 text-sm rounded-lg border border-sage-border bg-white focus:outline-none focus:ring-2 focus:ring-leaf"
+          oninput="handleSearch(this.value)"
+        >
+        <i data-lucide="search" class="w-4 h-4 text-charcoal-muted absolute left-3 top-3"></i>
+      </div>
+      <div class="flex flex-col space-y-2 text-sm font-medium">
+        <a href="#hero" onclick="toggleMobileMenu()" class="px-3 py-2 rounded-lg hover:bg-sage-soft text-charcoal">Home</a>
+        <a href="#catalog" onclick="toggleMobileMenu(); filterByCategory('all');" class="px-3 py-2 rounded-lg hover:bg-sage-soft text-charcoal">Shop All Products</a>
+        <a href="#categories-section" onclick="toggleMobileMenu()" class="px-3 py-2 rounded-lg hover:bg-sage-soft text-charcoal">Browse Categories</a>
+        <a href="#about-section" onclick="toggleMobileMenu()" class="px-3 py-2 rounded-lg hover:bg-sage-soft text-charcoal">About Our Mission</a>
+        <a href="#reviews-section" onclick="toggleMobileMenu()" class="px-3 py-2 rounded-lg hover:bg-sage-soft text-charcoal">Customer Reviews</a>
+        <a href="#footer" onclick="toggleMobileMenu()" class="px-3 py-2 rounded-lg hover:bg-sage-soft text-charcoal">Contact & Support</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section id="hero" class="relative overflow-hidden bg-gradient-to-b from-sage-soft via-cream to-cream pt-10 pb-16 lg:py-24">
+    <!-- Decorative organic background shapes -->
+    <div class="absolute top-10 right-5 -z-10 w-72 h-72 bg-leaf/10 rounded-full blur-3xl"></div>
+    <div class="absolute bottom-5 left-5 -z-10 w-80 h-80 bg-sage/40 rounded-full blur-3xl"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        
+        <!-- Hero Text Content -->
+        <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+          <div class="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm border border-sage-border px-3.5 py-1.5 rounded-full text-xs font-semibold text-forest shadow-sm">
+            <span class="w-2 h-2 rounded-full bg-leaf animate-pulse"></span>
+            Mindful Living Essentials • 100% Ethical & Circular
+          </div>
+          
+          <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-forest leading-[1.15] tracking-tight">
+            Small Choices.<br>
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-forest via-leaf to-leaf-light">
+              Greener Planet.
+            </span>
+          </h1>
+          
+          <p class="text-base sm:text-lg text-charcoal-muted max-w-xl mx-auto lg:mx-0 font-normal leading-relaxed">
+            Discover everyday essentials thoughtfully engineered from organic bamboo, recycled paper, and sustainable stainless steel for a cleaner future.
+          </p>
+
+          <!-- Hero Actions -->
+          <div class="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-2">
+            <a 
+              href="#catalog" 
+              class="bg-forest hover:bg-forest-light text-white font-semibold px-7 py-3.5 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2 active:scale-95"
+            >
+              <span>Shop Now</span>
+              <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </a>
+            <a 
+              href="#categories-section" 
+              class="bg-white hover:bg-sage-soft text-forest font-semibold px-7 py-3.5 rounded-full border border-sage-border shadow-sm transition-all duration-200"
+            >
+              Explore Categories
+            </a>
+          </div>
+
+          <!-- Eco Credentials / Badges -->
+          <div class="pt-6 border-t border-sage-border/60 grid grid-cols-3 gap-4 max-w-lg mx-auto lg:mx-0 text-center lg:text-left">
+            <div>
+              <p class="text-2xl font-bold text-forest">15k+</p>
+              <p class="text-xs text-charcoal-muted font-medium">Plastic Bottles Saved</p>
+            </div>
+            <div>
+              <p class="text-2xl font-bold text-forest">100%</p>
+              <p class="text-xs text-charcoal-muted font-medium">Biodegradable Packs</p>
+            </div>
+            <div>
+              <p class="text-2xl font-bold text-forest">4.9 ★</p>
+              <p class="text-xs text-charcoal-muted font-medium">Verified Customer Rating</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hero Visual Showcase -->
+        <div class="lg:col-span-5 relative flex justify-center">
+          <div class="relative w-full max-w-md">
+            <!-- Floating accent badge -->
+            <div class="absolute -top-4 -left-4 z-20 bg-white/95 backdrop-blur-md p-3 rounded-2xl shadow-xl border border-sage-border flex items-center gap-3 animate-float">
+              <div class="w-10 h-10 rounded-xl bg-sage-soft text-leaf flex items-center justify-center">
+                <i data-lucide="recycle" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <p class="text-xs font-bold text-forest">Zero-Waste Standard</p>
+                <p class="text-[11px] text-charcoal-muted">Plastic-free certified</p>
+              </div>
+            </div>
+
+            <!-- Main Featured Image Container with realistic drop shadow -->
+            <div class="rounded-3xl overflow-hidden border-4 border-white shadow-2xl bg-white aspect-[4/5] relative">
+              <img 
+                src="bottle.jpeg" 
+                alt="EcoNest Bamboo Bottle & Sustainable Lifestyle" 
+                class="w-full h-full object-cover transform hover:scale-105 transition-transform duration-700"
+                onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=800&q=80';"
+              >
+              <div class="absolute inset-0 bg-gradient-to-t from-forest/70 via-transparent to-transparent"></div>
+              <div class="absolute bottom-6 left-6 right-6 text-white">
+                <span class="bg-leaf text-white text-[11px] font-bold px-2.5 py-1 rounded-md uppercase tracking-wider">Spotlight Item</span>
+                <h3 class="text-xl font-bold mt-1 text-white">Eco Bamboo Thermal Flask</h3>
+                <p class="text-xs text-sage mt-0.5">Keeps beverages hot or cold for 12 hours naturally.</p>
+                <div class="mt-3 flex items-center justify-between">
+                  <span class="text-lg font-bold text-white">₹699</span>
+                  <button onclick="quickAddToCart(2)" class="bg-white text-forest text-xs font-bold px-3 py-1.5 rounded-full hover:bg-sage transition-colors shadow">
+                    Quick Add +
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Bottom Floating Stamp -->
+            <div class="absolute -bottom-4 -right-4 z-20 bg-forest text-white p-3 rounded-2xl shadow-xl flex items-center gap-2 border border-leaf/40">
+              <i data-lucide="shield-check" class="w-5 h-5 text-leaf-light"></i>
+              <span class="text-xs font-semibold">Quality Verified</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Product Categories Section -->
+  <section id="categories-section" class="py-16 bg-cream border-t border-sage-border/40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-10">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider text-leaf">Curated Sustainability</span>
+          <h2 class="text-3xl font-extrabold text-forest mt-1">Browse by Eco Category</h2>
+          <p class="text-charcoal-muted text-sm mt-1">Every category is vetted for environmental footprint, recyclability, and longevity.</p>
+        </div>
+        <button 
+          onclick="filterByCategory('all'); scrollToCatalog();" 
+          class="mt-4 md:mt-0 text-sm font-semibold text-leaf hover:text-forest flex items-center gap-1.5 group"
+        >
+          View all 15+ products
+          <i data-lucide="chevron-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+        </button>
+      </div>
+
+      <!-- Categories Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+        
+        <!-- Category 1: Bamboo Bottles -->
+        <div onclick="filterByCategory('bamboo-bottles'); scrollToCatalog();" class="group cursor-pointer bg-white rounded-2xl p-4 border border-sage-border/80 shadow-sm hover:shadow-xl hover:border-leaf/50 transition-all duration-300 flex flex-col">
+          <div class="h-44 rounded-xl overflow-hidden mb-3 bg-sage-soft relative">
+            <img 
+              src="bottle.jpeg" 
+              alt="Bamboo Bottles Category" 
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=500&q=80';"
+            >
+            <span class="absolute top-2.5 right-2.5 bg-forest/80 backdrop-blur-sm text-sage text-[10px] font-bold px-2 py-0.5 rounded-full">3 Items</span>
+          </div>
+          <h3 class="font-bold text-forest text-base group-hover:text-leaf transition-colors">Bamboo Bottles</h3>
+          <p class="text-xs text-charcoal-muted mt-1 line-clamp-2">Insulated flasks and natural bamboo drinking vessels.</p>
+          <div class="mt-auto pt-3 flex items-center justify-between text-xs font-semibold text-leaf">
+            <span>Shop Category</span>
+            <i data-lucide="arrow-right" class="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform"></i>
+          </div>
+        </div>
+
+        <!-- Category 2: Printable Stationery -->
+        <div onclick="filterByCategory('printable-stationery'); scrollToCatalog();" class="group cursor-pointer bg-white rounded-2xl p-4 border border-sage-border/80 shadow-sm hover:shadow-xl hover:border-leaf/50 transition-all duration-300 flex flex-col">
+          <div class="h-44 rounded-xl overflow-hidden mb-3 bg-sage-soft relative">
+            <img 
+              src="pages.jpg" 
+              alt="Printable Stationery Category" 
+              class="w-full h-full object-contain p-2 group-hover:scale-105 transition-transform duration-500 bg-[#FAF7F0]"
+              onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1586075010923-2dd4570fb338?auto=format&fit=crop&w=500&q=80';"
+            >
+            <span class="absolute top-2.5 right-2.5 bg-forest/80 backdrop-blur-sm text-sage text-[10px] font-bold px-2 py-0.5 rounded-full">3 Items</span>
+          </div>
+          <h3 class="font-bold text-forest text-base group-hover:text-leaf transition-colors">Printable Stationery</h3>
+          <p class="text-xs text-charcoal-muted mt-1 line-clamp-2">Digital study planners, daily to-do lists, and eco guides.</p>
+          <div class="mt-auto pt-3 flex items-center justify-between text-xs font-semibold text-leaf">
+            <span>Shop Category</span>
+            <i data-lucide="arrow-right" class="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform"></i>
+          </div>
+        </div>
+
+        <!-- Category 3: Eco-Friendly Notebooks -->
+        <div onclick="filterByCategory('eco-notebooks'); scrollToCatalog();" class="group cursor-pointer bg-white rounded-2xl p-4 border border-sage-border/80 shadow-sm hover:shadow-xl hover:border-leaf/50 transition-all duration-300 flex flex-col">
+          <div class="h-44 rounded-xl overflow-hidden mb-3 bg-sage-soft relative">
+            <img 
+              src="books.jpeg" 
+              alt="Eco-Friendly Notebooks Category" 
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=500&q=80';"
+            >
+            <span class="absolute top-2.5 right-2.5 bg-forest/80 backdrop-blur-sm text-sage text-[10px] font-bold px-2 py-0.5 rounded-full">3 Items</span>
+          </div>
+          <h3 class="font-bold text-forest text-base group-hover:text-leaf transition-colors">Eco Notebooks</h3>
+          <p class="text-xs text-charcoal-muted mt-1 line-clamp-2">Tree-free kraft spiral journals & recycled cotton paper.</p>
+          <div class="mt-auto pt-3 flex items-center justify-between text-xs font-semibold text-leaf">
+            <span>Shop Category</span>
+            <i data-lucide="arrow-right" class="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform"></i>
+          </div>
+        </div>
+
+        <!-- Category 4: Reusable Lunch Boxes -->
+        <div onclick="filterByCategory('reusable-lunch-boxes'); scrollToCatalog();" class="group cursor-pointer bg-white rounded-2xl p-4 border border-sage-border/80 shadow-sm hover:shadow-xl hover:border-leaf/50 transition-all duration-300 flex flex-col">
+          <div class="h-44 rounded-xl overflow-hidden mb-3 bg-sage-soft relative">
+            <img 
+              src="box.jpeg" 
+              alt="Reusable Lunch Boxes Category" 
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=500&q=80';"
+            >
+            <span class="absolute top-2.5 right-2.5 bg-forest/80 backdrop-blur-sm text-sage text-[10px] font-bold px-2 py-0.5 rounded-full">3 Items</span>
+          </div>
+          <h3 class="font-bold text-forest text-base group-hover:text-leaf transition-colors">Reusable Lunch Boxes</h3>
+          <p class="text-xs text-charcoal-muted mt-1 line-clamp-2">Stainless steel bento boxes with natural bamboo lids.</p>
+          <div class="mt-auto pt-3 flex items-center justify-between text-xs font-semibold text-leaf">
+            <span>Shop Category</span>
+            <i data-lucide="arrow-right" class="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform"></i>
+          </div>
+        </div>
+
+        <!-- Category 5: Reusable Shopping Bags -->
+        <div onclick="filterByCategory('reusable-bags'); scrollToCatalog();" class="group cursor-pointer bg-white rounded-2xl p-4 border border-sage-border/80 shadow-sm hover:shadow-xl hover:border-leaf/50 transition-all duration-300 flex flex-col">
+          <div class="h-44 rounded-xl overflow-hidden mb-3 bg-sage-soft relative">
+            <img 
+              src="reusable-bags-500x500.webp" 
+              alt="Reusable Shopping Bags Category" 
+              class="w-full h-full object-contain p-2 group-hover:scale-105 transition-transform duration-500 bg-white"
+              onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1597484661643-2f5fef640dd1?auto=format&fit=crop&w=500&q=80';"
+            >
+            <span class="absolute top-2.5 right-2.5 bg-forest/80 backdrop-blur-sm text-sage text-[10px] font-bold px-2 py-0.5 rounded-full">3 Items</span>
+          </div>
+          <h3 class="font-bold text-forest text-base group-hover:text-leaf transition-colors">Reusable Bags</h3>
+          <p class="text-xs text-charcoal-muted mt-1 line-clamp-2">Organic cotton tote bags & heavy duty grocery sacks.</p>
+          <div class="mt-auto pt-3 flex items-center justify-between text-xs font-semibold text-leaf">
+            <span>Shop Category</span>
+            <i data-lucide="arrow-right" class="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform"></i>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Product Catalog Section -->
+  <section id="catalog" class="py-16 bg-cream-dark/50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Catalog Header -->
+      <div class="text-center max-w-2xl mx-auto mb-10">
+        <span class="text-xs font-bold uppercase tracking-wider text-leaf">Our Sustainable Store</span>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-forest mt-1">Ethical Essentials for Every Day</h2>
+        <p class="text-charcoal-muted text-sm mt-2">Filter by material, category, and budget. Each product is crafted with zero-plastic intent.</p>
+      </div>
+
+      <!-- Filters & Sorting Bar -->
+      <div class="bg-white rounded-2xl p-5 border border-sage-border shadow-sm mb-8 space-y-4">
+        
+        <!-- Category Filter Pills -->
+        <div class="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none text-xs font-semibold">
+          <button onclick="filterByCategory('all')" id="cat-pill-all" class="category-pill active bg-forest text-white px-4 py-2 rounded-full whitespace-nowrap transition-colors">
+            All Products (<span id="count-all">15</span>)
+          </button>
+          <button onclick="filterByCategory('bamboo-bottles')" id="cat-pill-bamboo-bottles" class="category-pill bg-sage-soft text-forest hover:bg-sage px-4 py-2 rounded-full whitespace-nowrap transition-colors">
+            Bamboo Bottles
+          </button>
+          <button onclick="filterByCategory('printable-stationery')" id="cat-pill-printable-stationery" class="category-pill bg-sage-soft text-forest hover:bg-sage px-4 py-2 rounded-full whitespace-nowrap transition-colors">
+            Printable Stationery
+          </button>
+          <button onclick="filterByCategory('eco-notebooks')" id="cat-pill-eco-notebooks" class="category-pill bg-sage-soft text-forest hover:bg-sage px-4 py-2 rounded-full whitespace-nowrap transition-colors">
+            Eco Notebooks
+          </button>
+          <button onclick="filterByCategory('reusable-lunch-boxes')" id="cat-pill-reusable-lunch-boxes" class="category-pill bg-sage-soft text-forest hover:bg-sage px-4 py-2 rounded-full whitespace-nowrap transition-colors">
+            Reusable Lunch Boxes
+          </button>
+          <button onclick="filterByCategory('reusable-bags')" id="cat-pill-reusable-bags" class="category-pill bg-sage-soft text-forest hover:bg-sage px-4 py-2 rounded-full whitespace-nowrap transition-colors">
+            Reusable Bags
+          </button>
+        </div>
+
+        <!-- Controls Row: Search Input, Price Range, In-Stock, Sort -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-3 border-t border-sage-border/60">
+          
+          <!-- Keyword Search -->
+          <div>
+            <label class="block text-[11px] font-bold text-charcoal-muted uppercase tracking-wider mb-1">Search Keywords</label>
+            <div class="relative">
+              <input 
+                type="text" 
+                id="catalog-search" 
+                placeholder="Search by title or feature..." 
+                class="w-full pl-8 pr-3 py-2 text-xs rounded-xl border border-sage-border focus:ring-2 focus:ring-leaf focus:outline-none"
+                oninput="handleSearch(this.value)"
+              >
+              <i data-lucide="search" class="w-3.5 h-3.5 text-charcoal-muted absolute left-2.5 top-2.5"></i>
+            </div>
+          </div>
+
+          <!-- Price Range Filter -->
+          <div>
+            <div class="flex justify-between items-center text-[11px] font-bold text-charcoal-muted uppercase tracking-wider mb-1">
+              <span>Max Price</span>
+              <span id="price-slider-label" class="text-forest font-bold">₹1,000</span>
+            </div>
+            <input 
+              type="range" 
+              id="price-range" 
+              min="79" 
+              max="1000" 
+              value="1000" 
+              step="20"
+              class="w-full accent-forest cursor-pointer"
+              oninput="handlePriceFilter(this.value)"
+            >
+          </div>
+
+          <!-- Sorting Dropdown -->
+          <div>
+            <label class="block text-[11px] font-bold text-charcoal-muted uppercase tracking-wider mb-1">Sort Products</label>
+            <select 
+              id="sort-select" 
+              class="w-full py-2 px-3 text-xs rounded-xl border border-sage-border focus:ring-2 focus:ring-leaf focus:outline-none bg-white"
+              onchange="handleSort(this.value)"
+            >
+              <option value="featured">Featured & Best Matches</option>
+              <option value="price-low">Price: Low to High</option>
+              <option value="price-high">Price: High to Low</option>
+              <option value="rating">Highest Customer Rating</option>
+              <option value="name-az">Name: A to Z</option>
+            </select>
+          </div>
+
+          <!-- Filter Reset & Results Counter -->
+          <div class="flex items-end justify-between gap-2">
+            <label class="inline-flex items-center gap-2 cursor-pointer pb-2">
+              <input type="checkbox" id="stock-only" class="rounded text-forest focus:ring-leaf w-4 h-4 accent-forest" onchange="applyFilters()">
+              <span class="text-xs font-semibold text-charcoal">In Stock Only</span>
+            </label>
+            <button 
+              onclick="resetFilters()" 
+              class="text-xs font-semibold text-earth hover:text-forest underline pb-2 transition-colors"
+            >
+              Reset Filters
+            </button>
+          </div>
+
+        </div>
+
+        <!-- Live matching indicator -->
+        <div class="text-xs text-charcoal-muted flex items-center justify-between pt-1">
+          <span>Showing <strong id="visible-count" class="text-forest font-bold">15</strong> sustainable products</span>
+          <span id="active-filter-tag" class="text-leaf font-medium">All Categories</span>
+        </div>
+
+      </div>
+
+      <!-- Products Grid Container -->
+      <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <!-- Products populated via JavaScript -->
+      </div>
+
+      <!-- Empty State View -->
+      <div id="empty-catalog-state" class="hidden text-center py-16 bg-white rounded-3xl border border-sage-border my-6">
+        <div class="w-16 h-16 rounded-full bg-sage-soft text-leaf flex items-center justify-center mx-auto mb-4">
+          <i data-lucide="leaf" class="w-8 h-8"></i>
+        </div>
+        <h3 class="text-xl font-bold text-forest">No Eco-Friendly Products Found</h3>
+        <p class="text-sm text-charcoal-muted max-w-md mx-auto mt-1 mb-5">We couldn't find items matching your search or filters. Try adjusting your query or price range.</p>
+        <button onclick="resetFilters()" class="bg-forest text-white text-xs font-bold px-6 py-2.5 rounded-full hover:bg-forest-light transition-all shadow">
+          Clear All Filters
+        </button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- About Us Section -->
+  <section id="about-section" class="py-20 bg-cream">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        
+        <div class="lg:col-span-6 space-y-6">
+          <span class="text-xs font-bold uppercase tracking-wider text-leaf">Our Core Philosophy</span>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-forest leading-tight">
+            Better Products.<br>Better Planet.
+          </h2>
+          <p class="text-charcoal-muted leading-relaxed text-sm sm:text-base">
+            EcoNest was founded with a singular conviction: everyday convenience shouldn't come at the cost of our ecosystems. By substituting throwaway plastics with sustainably farmed moso bamboo, food-grade steel, and organic cotton, we make conscious living seamless and affordable.
+          </p>
+          
+          <div class="space-y-3 pt-2">
+            <div class="flex items-start gap-3">
+              <div class="w-6 h-6 rounded-full bg-sage-soft text-leaf flex items-center justify-center shrink-0 mt-0.5">
+                <i data-lucide="check" class="w-3.5 h-3.5"></i>
+              </div>
+              <p class="text-xs sm:text-sm text-charcoal"><strong class="text-forest">Ethically Sourced Raw Bamboo:</strong> Harvested responsibly from regenerative groves that naturally sequester carbon without pesticides.</p>
+            </div>
+            <div class="flex items-start gap-3">
+              <div class="w-6 h-6 rounded-full bg-sage-soft text-leaf flex items-center justify-center shrink-0 mt-0.5">
+                <i data-lucide="check" class="w-3.5 h-3.5"></i>
+              </div>
+              <p class="text-xs sm:text-sm text-charcoal"><strong class="text-forest">100% Recycled & Compostable Pack:</strong> We ship exclusively with water-activated kraft tape and unbleached corrugated boxes.</p>
+            </div>
+            <div class="flex items-start gap-3">
+              <div class="w-6 h-6 rounded-full bg-sage-soft text-leaf flex items-center justify-center shrink-0 mt-0.5">
+                <i data-lucide="check" class="w-3.5 h-3.5"></i>
+              </div>
+              <p class="text-xs sm:text-sm text-charcoal"><strong class="text-forest">Closing the Loop:</strong> Durable designs meant to replace thousands of single-use disposable alternatives.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-6 grid grid-cols-2 gap-4">
+          <div class="space-y-4">
+            <div class="rounded-2xl overflow-hidden shadow-lg border border-sage-border bg-white h-52">
+              <img src="box.jpeg" alt="Sustainable Bento Box" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80';">
+            </div>
+            <div class="bg-forest text-white p-6 rounded-2xl shadow-md space-y-1">
+              <h4 class="text-2xl font-bold font-heading">Zero Waste</h4>
+              <p class="text-xs text-sage">Committed to minimal environmental footprint across our whole supply chain.</p>
+            </div>
+          </div>
+          <div class="space-y-4 pt-6">
+            <div class="bg-sage-soft text-forest p-6 rounded-2xl border border-sage-border space-y-1">
+              <h4 class="text-2xl font-bold font-heading">Local Craft</h4>
+              <p class="text-xs text-charcoal-muted">Supporting local Indian artisans working with natural bamboo and jute.</p>
+            </div>
+            <div class="rounded-2xl overflow-hidden shadow-lg border border-sage-border bg-white h-52">
+              <img src="books.jpeg" alt="Recycled Paper Notebooks" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=600&q=80';">
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Choose Us Benefit Cards -->
+  <section class="py-16 bg-forest text-cream">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-xl mx-auto mb-12">
+        <span class="text-xs font-bold uppercase tracking-widest text-leaf-light">Why Choose EcoNest</span>
+        <h2 class="text-3xl font-extrabold text-white mt-1">Conscious Shopping Made Simple</h2>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        
+        <div class="bg-forest-dark/70 border border-leaf/30 rounded-2xl p-6 text-center hover:bg-forest-light/40 transition-colors">
+          <div class="w-12 h-12 rounded-xl bg-leaf/20 text-leaf-light flex items-center justify-center mx-auto mb-4">
+            <i data-lucide="feather" class="w-6 h-6"></i>
+          </div>
+          <h3 class="font-bold text-white text-base">Sustainable Materials</h3>
+          <p class="text-xs text-sage/80 mt-2 leading-relaxed">FSC certified bamboo, food-safe 304 steel, and chemical-free organic cotton weaves.</p>
+        </div>
+
+        <div class="bg-forest-dark/70 border border-leaf/30 rounded-2xl p-6 text-center hover:bg-forest-light/40 transition-colors">
+          <div class="w-12 h-12 rounded-xl bg-leaf/20 text-leaf-light flex items-center justify-center mx-auto mb-4">
+            <i data-lucide="refresh-cw" class="w-6 h-6"></i>
+          </div>
+          <h3 class="font-bold text-white text-base">Reusable Everyday</h3>
+          <p class="text-xs text-sage/80 mt-2 leading-relaxed">Engineered for years of heavy daily use, drastically slashing disposable plastic waste.</p>
+        </div>
+
+        <div class="bg-forest-dark/70 border border-leaf/30 rounded-2xl p-6 text-center hover:bg-forest-light/40 transition-colors">
+          <div class="w-12 h-12 rounded-xl bg-leaf/20 text-leaf-light flex items-center justify-center mx-auto mb-4">
+            <i data-lucide="package-check" class="w-6 h-6"></i>
+          </div>
+          <h3 class="font-bold text-white text-base">Thoughtful Packaging</h3>
+          <p class="text-xs text-sage/80 mt-2 leading-relaxed">No plastic wraps or styrofoam peanuts. Only 100% compostable paper padding.</p>
+        </div>
+
+        <div class="bg-forest-dark/70 border border-leaf/30 rounded-2xl p-6 text-center hover:bg-forest-light/40 transition-colors">
+          <div class="w-12 h-12 rounded-xl bg-leaf/20 text-leaf-light flex items-center justify-center mx-auto mb-4">
+            <i data-lucide="truck" class="w-6 h-6"></i>
+          </div>
+          <h3 class="font-bold text-white text-base">Carbon-Neutral Shipping</h3>
+          <p class="text-xs text-sage/80 mt-2 leading-relaxed">Prompt 3-5 day delivery across all Indian pin codes with doorstep tracking.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Customer Reviews / Testimonials -->
+  <section id="reviews-section" class="py-16 bg-cream border-b border-sage-border">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-xl mx-auto mb-10">
+        <span class="text-xs font-bold uppercase tracking-wider text-leaf">Community Voices</span>
+        <h2 class="text-3xl font-extrabold text-forest mt-1">Loved by Eco Conscious Shoppers</h2>
+        <p class="text-charcoal-muted text-xs mt-1 italic">(Sample demonstration testimonials until verified customer collection begins)</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        <div class="bg-white rounded-2xl p-6 border border-sage-border shadow-sm flex flex-col justify-between">
+          <div>
+            <div class="flex text-amber-400 mb-3">
+              ★★★★★
+            </div>
+            <p class="text-sm text-charcoal leading-relaxed italic">
+              "The Bamboo Lid Lunch Box has completely changed my office lunches. It is completely leakproof, cleans easily, and looks gorgeous on my desk."
+            </p>
+          </div>
+          <div class="mt-6 flex items-center gap-3 pt-4 border-t border-sage-border/50">
+            <div class="w-10 h-10 rounded-full bg-sage flex items-center justify-center font-bold text-forest text-sm">
+              AK
+            </div>
+            <div>
+              <p class="font-bold text-forest text-xs">Ananya K.</p>
+              <p class="text-[11px] text-charcoal-muted">Verified Buyer • Mumbai</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl p-6 border border-sage-border shadow-sm flex flex-col justify-between">
+          <div>
+            <div class="flex text-amber-400 mb-3">
+              ★★★★★
+            </div>
+            <p class="text-sm text-charcoal leading-relaxed italic">
+              "The natural bamboo flask keeps water ice-cold through Chennai summers. Plus, the invoice PDF downloaded seamlessly for my tax records!"
+            </p>
+          </div>
+          <div class="mt-6 flex items-center gap-3 pt-4 border-t border-sage-border/50">
+            <div class="w-10 h-10 rounded-full bg-sage flex items-center justify-center font-bold text-forest text-sm">
+              RM
+            </div>
+            <div>
+              <p class="font-bold text-forest text-xs">Rohit M.</p>
+              <p class="text-[11px] text-charcoal-muted">Verified Buyer • Bengaluru</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl p-6 border border-sage-border shadow-sm flex flex-col justify-between">
+          <div>
+            <div class="flex text-amber-400 mb-3">
+              ★★★★★
+            </div>
+            <p class="text-sm text-charcoal leading-relaxed italic">
+              "I bought 3 organic cotton tote bags for weekend farmers markets. They hold so much weight without straining the shoulders. Truly top quality."
+            </p>
+          </div>
+          <div class="mt-6 flex items-center gap-3 pt-4 border-t border-sage-border/50">
+            <div class="w-10 h-10 rounded-full bg-sage flex items-center justify-center font-bold text-forest text-sm">
+              SP
+            </div>
+            <div>
+              <p class="font-bold text-forest text-xs">Sneha P.</p>
+              <p class="text-[11px] text-charcoal-muted">Verified Buyer • Pune</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Newsletter Section -->
+  <section class="py-14 bg-sage-soft border-b border-sage-border">
+    <div class="max-w-4xl mx-auto px-4 text-center">
+      <div class="w-12 h-12 bg-white rounded-full text-leaf flex items-center justify-center mx-auto mb-3 shadow-sm">
+        <i data-lucide="mail" class="w-6 h-6"></i>
+      </div>
+      <h3 class="text-2xl font-bold text-forest font-heading">Join the EcoNest Newsletter</h3>
+      <p class="text-charcoal-muted text-xs sm:text-sm mt-1 max-w-md mx-auto">Get zero-waste home tips, seasonal discounts, and early access to new sustainable harvests.</p>
+      
+      <form onsubmit="handleNewsletterSubmit(event)" class="mt-6 flex flex-col sm:flex-row gap-2 max-w-md mx-auto">
+        <input 
+          type="email" 
+          id="newsletter-email" 
+          required 
+          placeholder="Enter your email address" 
+          class="flex-1 px-4 py-2.5 rounded-full border border-sage-border text-xs focus:outline-none focus:ring-2 focus:ring-leaf bg-white"
+        >
+        <button type="submit" class="bg-forest hover:bg-forest-light text-white text-xs font-bold px-6 py-2.5 rounded-full shadow transition-all active:scale-95">
+          Subscribe
+        </button>
+      </form>
+      <p class="text-[11px] text-charcoal-muted/70 mt-2">Zero spam. Unsubscribe anytime with one click.</p>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer id="footer" class="bg-forest text-cream pt-14 pb-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 pb-12 border-b border-forest-light/60 text-xs">
+        
+        <!-- Brand Info -->
+        <div class="lg:col-span-2 space-y-3">
+          <div class="flex items-center gap-2">
+            <div class="w-8 h-8 rounded-full bg-leaf text-white flex items-center justify-center shadow">
+              <i data-lucide="sprout" class="w-5 h-5"></i>
+            </div>
+            <span class="text-xl font-bold tracking-tight text-white">EcoNest</span>
+          </div>
+          <p class="text-sage/80 leading-relaxed text-xs max-w-sm">
+            EcoNest empowers conscious lifestyles with practical, durable, and certified sustainable products made from renewable bamboo, recycled paper, and metals.
+          </p>
+          <div class="pt-2 flex items-center space-x-3 text-sage">
+            <a href="#" class="hover:text-white transition-colors" aria-label="EcoNest on Instagram"><i data-lucide="instagram" class="w-4 h-4"></i></a>
+            <a href="#" class="hover:text-white transition-colors" aria-label="EcoNest on Twitter"><i data-lucide="twitter" class="w-4 h-4"></i></a>
+            <a href="#" class="hover:text-white transition-colors" aria-label="EcoNest on Facebook"><i data-lucide="facebook" class="w-4 h-4"></i></a>
+            <a href="#" class="hover:text-white transition-colors" aria-label="EcoNest on YouTube"><i data-lucide="youtube" class="w-4 h-4"></i></a>
+          </div>
+        </div>
+
+        <!-- Quick Links -->
+        <div>
+          <h4 class="font-bold text-white uppercase tracking-wider text-xs mb-3">Quick Navigation</h4>
+          <ul class="space-y-2 text-sage">
+            <li><a href="#hero" class="hover:text-white transition-colors">Home</a></li>
+            <li><a href="#catalog" class="hover:text-white transition-colors" onclick="filterByCategory('all')">Shop All Products</a></li>
+            <li><a href="#categories-section" class="hover:text-white transition-colors">Eco Categories</a></li>
+            <li><a href="#about-section" class="hover:text-white transition-colors">Our Sustainability Mission</a></li>
+            <li><a href="#reviews-section" class="hover:text-white transition-colors">Customer Reviews</a></li>
+          </ul>
+        </div>
+
+        <!-- Categories -->
+        <div>
+          <h4 class="font-bold text-white uppercase tracking-wider text-xs mb-3">Product Lines</h4>
+          <ul class="space-y-2 text-sage">
+            <li><a href="#catalog" onclick="filterByCategory('bamboo-bottles'); scrollToCatalog();" class="hover:text-white transition-colors">Bamboo Bottles</a></li>
+            <li><a href="#catalog" onclick="filterByCategory('printable-stationery'); scrollToCatalog();" class="hover:text-white transition-colors">Printable Stationery</a></li>
+            <li><a href="#catalog" onclick="filterByCategory('eco-notebooks'); scrollToCatalog();" class="hover:text-white transition-colors">Eco-Friendly Notebooks</a></li>
+            <li><a href="#catalog" onclick="filterByCategory('reusable-lunch-boxes'); scrollToCatalog();" class="hover:text-white transition-colors">Reusable Lunch Boxes</a></li>
+            <li><a href="#catalog" onclick="filterByCategory('reusable-bags'); scrollToCatalog();" class="hover:text-white transition-colors">Reusable Shopping Bags</a></li>
+          </ul>
+        </div>
+
+        <!-- Customer Care & Contact -->
+        <div>
+          <h4 class="font-bold text-white uppercase tracking-wider text-xs mb-3">Customer Support</h4>
+          <ul class="space-y-2 text-sage">
+            <li class="flex items-center gap-2">
+              <i data-lucide="mail" class="w-3.5 h-3.5 text-leaf-light"></i>
+              <span>support@econeststore.in</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <i data-lucide="phone" class="w-3.5 h-3.5 text-leaf-light"></i>
+              <span>+91 98765 43210</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <i data-lucide="map-pin" class="w-3.5 h-3.5 text-leaf-light mt-0.5"></i>
+              <span>Sector 14, Green Tech Park, Bengaluru, KA - 560001</span>
+            </li>
+            <li class="pt-2 text-[11px] text-sage/70">Mon - Sat: 9:30 AM to 6:30 PM IST</li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="pt-6 flex flex-col sm:flex-row items-center justify-between text-[11px] text-sage/70 gap-3">
+        <p>© 2026 EcoNest India Pvt. Ltd. All rights reserved.</p>
+        <div class="flex gap-4">
+          <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+          <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
+          <a href="#" class="hover:text-white transition-colors">Shipping & Refund Policy</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Cart Slide-Over Drawer -->
+  <div id="cart-drawer" class="fixed inset-0 z-50 overflow-hidden pointer-events-none transition-opacity duration-300 opacity-0">
+    <!-- Backdrop overlay -->
+    <div id="cart-backdrop" onclick="toggleCartDrawer(false)" class="absolute inset-0 bg-black/50 backdrop-blur-xs transition-opacity"></div>
+    
+    <div class="fixed inset-y-0 right-0 max-w-full flex pl-10">
+      <div id="cart-panel" class="w-screen max-w-md bg-white shadow-2xl flex flex-col transform translate-x-full transition-transform duration-300 ease-in-out pointer-events-auto">
+        
+        <!-- Cart Header -->
+        <div class="p-5 border-b border-sage-border flex items-center justify-between bg-cream">
+          <div class="flex items-center gap-2">
+            <i data-lucide="shopping-bag" class="w-5 h-5 text-forest"></i>
+            <h3 class="font-bold text-forest text-lg">Your Eco Cart</h3>
+            <span id="drawer-item-count" class="bg-sage text-forest text-xs font-bold px-2 py-0.5 rounded-full">0 items</span>
+          </div>
+          <button onclick="toggleCartDrawer(false)" class="p-1 rounded-full text-charcoal hover:bg-sage-soft transition-colors" aria-label="Close cart">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+
+        <!-- Free Delivery Progress Bar -->
+        <div class="px-5 py-3 bg-sage-soft border-b border-sage-border/60">
+          <div class="flex justify-between items-center text-xs mb-1.5 font-medium">
+            <span id="shipping-progress-text" class="text-forest">Add ₹999 for FREE Delivery</span>
+            <span id="shipping-progress-pct" class="text-leaf font-bold">0%</span>
+          </div>
+          <div class="w-full bg-white h-2 rounded-full overflow-hidden border border-sage-border">
+            <div id="shipping-progress-bar" class="bg-leaf h-full rounded-full transition-all duration-500" style="width: 0%;"></div>
+          </div>
+        </div>
+
+        <!-- Cart Items List Container -->
+        <div id="cart-items-container" class="flex-1 overflow-y-auto p-5 space-y-4">
+          <!-- Dynamic Items -->
+        </div>
+
+        <!-- Cart Footer / Totals and Checkout CTA -->
+        <div id="cart-footer" class="p-5 border-t border-sage-border bg-cream space-y-3">
+          
+          <div class="space-y-1.5 text-xs">
+            <div class="flex justify-between text-charcoal-muted">
+              <span>Cart Subtotal</span>
+              <span id="cart-subtotal-val" class="font-semibold text-charcoal">₹0.00</span>
+            </div>
+            <div class="flex justify-between text-charcoal-muted">
+              <span class="flex items-center gap-1">Shipping Fee <i data-lucide="info" class="w-3 h-3 cursor-pointer" title="Free above ₹999; flat ₹49 below ₹999"></i></span>
+              <span id="cart-shipping-val" class="font-semibold text-charcoal">₹49.00</span>
+            </div>
+            <div class="flex justify-between text-xs text-leaf font-medium">
+              <span>Eco Discount</span>
+              <span id="cart-discount-val">-₹0.00</span>
+            </div>
+            <div class="flex justify-between text-base font-extrabold text-forest pt-2 border-t border-sage-border">
+              <span>Estimated Total</span>
+              <span id="cart-grand-val">₹0.00</span>
+            </div>
+          </div>
+
+          <div class="space-y-2 pt-1">
+            <button 
+              id="proceed-checkout-btn"
+              onclick="openCheckoutModal()" 
+              class="w-full bg-forest hover:bg-forest-light text-white py-3 rounded-xl font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2 active:scale-98"
+            >
+              <span>Proceed to Checkout</span>
+              <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </button>
+            <div class="flex gap-2">
+              <button 
+                onclick="toggleCartDrawer(false)" 
+                class="w-1/2 py-2 text-xs font-semibold text-forest hover:bg-sage-soft rounded-lg transition-colors"
+              >
+                Continue Shopping
+              </button>
+              <button 
+                onclick="promptClearCart()" 
+                class="w-1/2 py-2 text-xs font-semibold text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+              >
+                Clear Cart
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Product Details Modal -->
+  <div id="product-detail-modal" class="fixed inset-0 z-50 hidden overflow-y-auto bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-3xl w-full overflow-hidden shadow-2xl border border-sage-border animate-in fade-in zoom-in duration-200 relative my-8">
+      
+      <!-- Close Button -->
+      <button onclick="closeProductModal()" class="absolute top-4 right-4 z-10 p-2 rounded-full bg-cream hover:bg-sage-soft text-charcoal transition-colors">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div class="grid grid-cols-1 md:grid-cols-2">
+        <!-- Product Image Gallery View -->
+        <div class="p-6 bg-cream flex flex-col justify-between items-center">
+          <div class="w-full aspect-square rounded-2xl overflow-hidden bg-white shadow-sm border border-sage-border flex items-center justify-center relative">
+            <img id="modal-product-img" src="" alt="Product Detail" class="w-full h-full object-cover">
+            <span id="modal-product-badge" class="absolute top-3 left-3 bg-forest text-white text-[10px] font-bold px-2 py-0.5 rounded-full">Eco Favorite</span>
+          </div>
+          <!-- Thumbnail Row for alternate angles -->
+          <div class="flex gap-2 mt-4 w-full justify-center" id="modal-thumbnails">
+            <!-- Injected via JS -->
+          </div>
+        </div>
+
+        <!-- Product Specs & Add To Cart -->
+        <div class="p-6 sm:p-8 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-1">
+              <span id="modal-category-tag" class="text-xs font-bold text-leaf uppercase tracking-wider">Category</span>
+              <div class="flex items-center gap-1 text-xs text-amber-500 font-semibold">
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-current"></i>
+                <span id="modal-rating-val">4.8</span>
+                <span id="modal-reviews-count" class="text-charcoal-muted font-normal">(42 reviews)</span>
+              </div>
+            </div>
+
+            <h3 id="modal-product-title" class="text-2xl font-extrabold text-forest">Product Title</h3>
+            <p id="modal-sku" class="text-[11px] text-charcoal-muted mt-0.5">SKU: ECO-001</p>
+
+            <div class="flex items-baseline gap-3 my-3">
+              <span id="modal-price" class="text-2xl font-bold text-forest">₹499</span>
+              <span id="modal-original-price" class="text-sm text-charcoal-muted line-through">₹599</span>
+              <span id="modal-discount-tag" class="text-xs font-bold bg-sage text-forest px-2 py-0.5 rounded-md">Save 17%</span>
+            </div>
+
+            <p id="modal-description" class="text-xs sm:text-sm text-charcoal-muted leading-relaxed mb-4">
+              Detailed description of the product and its sustainability credentials.
+            </p>
+
+            <!-- Sustainability Checklist -->
+            <div class="bg-sage-soft/70 rounded-xl p-3 border border-sage-border/80 space-y-1.5 text-xs text-forest mb-4">
+              <div class="flex items-center gap-2">
+                <i data-lucide="leaf" class="w-3.5 h-3.5 text-leaf"></i>
+                <span id="modal-material">100% Organic Bamboo & Food Grade Steel</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <i data-lucide="package" class="w-3.5 h-3.5 text-leaf"></i>
+                <span>Biodegradable Plastic-Free Packaging</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <i data-lucide="truck" class="w-3.5 h-3.5 text-leaf"></i>
+                <span>Dispatches within 24 hours from India</span>
+              </div>
+            </div>
+
+            <!-- Stock status indicator -->
+            <div class="flex items-center gap-2 text-xs mb-4">
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+              <span id="modal-stock-status" class="font-semibold text-emerald-800">In Stock (18 units left)</span>
+            </div>
+          </div>
+
+          <!-- Quantity Selector and Action -->
+          <div class="space-y-3 pt-2 border-t border-sage-border">
+            <div class="flex items-center gap-3">
+              <div class="flex items-center border border-sage-border rounded-xl bg-cream overflow-hidden">
+                <button onclick="adjustModalQty(-1)" class="px-3 py-2 text-charcoal hover:bg-sage transition-colors font-bold">−</button>
+                <span id="modal-qty-input" class="px-4 py-2 text-xs font-bold text-forest select-none">1</span>
+                <button onclick="adjustModalQty(1)" class="px-3 py-2 text-charcoal hover:bg-sage transition-colors font-bold">+</button>
+              </div>
+              <button 
+                id="modal-add-cart-btn" 
+                onclick="addModalProductToCart()" 
+                class="flex-1 bg-forest hover:bg-forest-light text-white py-2.5 px-4 rounded-xl text-xs font-bold shadow-md transition-all flex items-center justify-center gap-2"
+              >
+                <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+                <span>Add to Shopping Cart</span>
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Checkout Modal -->
+  <div id="checkout-modal" class="fixed inset-0 z-50 hidden overflow-y-auto bg-black/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4">
+    <div class="bg-white rounded-3xl max-w-4xl w-full overflow-hidden shadow-2xl border border-sage-border animate-in fade-in duration-200 my-8">
+      
+      <!-- Checkout Header -->
+      <div class="bg-forest text-cream p-5 flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <i data-lucide="shield-check" class="w-6 h-6 text-leaf-light"></i>
+          <div>
+            <h3 class="font-bold text-white text-lg">Secure EcoNest Checkout</h3>
+            <p class="text-xs text-sage">Enter your delivery address and choose a verified payment method</p>
+          </div>
+        </div>
+        <button onclick="closeCheckoutModal()" class="p-1 rounded-full text-sage hover:text-white hover:bg-forest-light transition-colors" aria-label="Close checkout">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <form id="checkout-form" onsubmit="handleCheckoutSubmission(event)" class="p-6 sm:p-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          
+          <!-- Customer & Shipping Form (7 cols) -->
+          <div class="lg:col-span-7 space-y-4">
+            <h4 class="font-bold text-forest text-sm uppercase tracking-wider flex items-center gap-2 border-b border-sage-border pb-2">
+              <i data-lucide="map-pin" class="w-4 h-4 text-leaf"></i>
+              1. Delivery Information
+            </h4>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+              <div>
+                <label class="block font-semibold text-charcoal mb-1">Full Name *</label>
+                <input type="text" id="cust-name" required placeholder="e.g. Priya Sharma" class="w-full px-3 py-2 rounded-lg border border-sage-border focus:ring-2 focus:ring-leaf focus:outline-none">
+              </div>
+              <div>
+                <label class="block font-semibold text-charcoal mb-1">Email Address *</label>
+                <input type="email" id="cust-email" required placeholder="priya@example.com" class="w-full px-3 py-2 rounded-lg border border-sage-border focus:ring-2 focus:ring-leaf focus:outline-none">
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+              <div>
+                <label class="block font-semibold text-charcoal mb-1">Mobile Phone (India +91) *</label>
+                <div class="flex">
+                  <span class="inline-flex items-center px-2.5 rounded-l-lg border border-r-0 border-sage-border bg-sage-soft text-charcoal font-semibold text-xs">+91</span>
+                  <input type="tel" id="cust-phone" required pattern="[6-9][0-9]{9}" maxlength="10" placeholder="9876543210" class="w-full px-3 py-2 rounded-r-lg border border-sage-border focus:ring-2 focus:ring-leaf focus:outline-none">
+                </div>
+                <span class="text-[10px] text-charcoal-muted">10-digit mobile number</span>
+              </div>
+              <div>
+                <label class="block font-semibold text-charcoal mb-1">6-Digit PIN Code *</label>
+                <input type="text" id="cust-pincode" required pattern="[0-9]{6}" maxlength="6" placeholder="e.g. 560001" class="w-full px-3 py-2 rounded-lg border border-sage-border focus:ring-2 focus:ring-leaf focus:outline-none" oninput="lookupPinCode(this.value)">
+                <span id="pincode-hint" class="text-[10px] text-leaf font-medium">Auto-detects city & state</span>
+              </div>
+            </div>
+
+            <div class="text-xs space-y-3">
+              <div>
+                <label class="block font-semibold text-charcoal mb-1">Flat / House No. & Street Address *</label>
+                <input type="text" id="cust-address" required placeholder="Flat 402, Green Meadows, 12th Main Road" class="w-full px-3 py-2 rounded-lg border border-sage-border focus:ring-2 focus:ring-leaf focus:outline-none">
+              </div>
+              <div>
+                <label class="block font-semibold text-charcoal mb-1">Locality / Area *</label>
+                <input type="text" id="cust-locality" required placeholder="Indiranagar Stage 2" class="w-full px-3 py-2 rounded-lg border border-sage-border focus:ring-2 focus:ring-leaf focus:outline-none">
+              </div>
+              <div class="grid grid-cols-2 gap-3">
+                <div>
+                  <label class="block font-semibold text-charcoal mb-1">City *</label>
+                  <input type="text" id="cust-city" required placeholder="Bengaluru" class="w-full px-3 py-2 rounded-lg border border-sage-border focus:ring-2 focus:ring-leaf focus:outline-none">
+                </div>
+                <div>
+                  <label class="block font-semibold text-charcoal mb-1">State *</label>
+                  <input type="text" id="cust-state" required placeholder="Karnataka" class="w-full px-3 py-2 rounded-lg border border-sage-border focus:ring-2 focus:ring-leaf focus:outline-none">
+                </div>
+              </div>
+              <div>
+                <label class="block font-semibold text-charcoal mb-1">Optional Landmark</label>
+                <input type="text" id="cust-landmark" placeholder="Near Botanical Garden Gate 3" class="w-full px-3 py-2 rounded-lg border border-sage-border focus:ring-2 focus:ring-leaf focus:outline-none">
+              </div>
+            </div>
+
+            <!-- Billing address checkbox -->
+            <label class="flex items-center gap-2 cursor-pointer pt-1 text-xs text-charcoal font-medium">
+              <input type="checkbox" id="billing-same" checked class="rounded text-forest focus:ring-leaf w-4 h-4 accent-forest">
+              <span>Billing address is identical to delivery address</span>
+            </label>
+
+          </div>
+
+          <!-- Order Summary & Payment Gateway Choice (5 cols) -->
+          <div class="lg:col-span-5 flex flex-col justify-between bg-cream p-5 rounded-2xl border border-sage-border">
+            <div>
+              <h4 class="font-bold text-forest text-sm uppercase tracking-wider flex items-center gap-2 border-b border-sage-border pb-2 mb-3">
+                <i data-lucide="credit-card" class="w-4 h-4 text-leaf"></i>
+                2. Payment Method
+              </h4>
+
+              <!-- Payment Method Selection Radio Group -->
+              <div class="space-y-2.5 text-xs">
+                
+                <!-- Online Razorpay Gateway Test Mode -->
+                <label class="flex items-start gap-3 p-3 rounded-xl border border-sage-border bg-white cursor-pointer hover:border-leaf transition-all">
+                  <input type="radio" name="payment_method" value="razorpay_online" checked class="mt-1 accent-forest">
+                  <div class="flex-1">
+                    <div class="flex items-center justify-between">
+                      <span class="font-bold text-forest">Razorpay Gateway (Card / NetBanking)</span>
+                      <span class="bg-blue-100 text-blue-800 text-[10px] font-bold px-1.5 py-0.5 rounded">Test Mode</span>
+                    </div>
+                    <p class="text-[11px] text-charcoal-muted mt-0.5">Instant test card payment with simulated OTP verification.</p>
+                  </div>
+                </label>
+
+                <!-- UPI Test Option -->
+                <label class="flex items-start gap-3 p-3 rounded-xl border border-sage-border bg-white cursor-pointer hover:border-leaf transition-all">
+                  <input type="radio" name="payment_method" value="upi_gateway" class="mt-1 accent-forest">
+                  <div class="flex-1">
+                    <div class="flex items-center justify-between">
+                      <span class="font-bold text-forest">UPI (GPay / PhonePe / Paytm / QR)</span>
+                      <span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-1.5 py-0.5 rounded">Zero Fee</span>
+                    </div>
+                    <p class="text-[11px] text-charcoal-muted mt-0.5">Pay using any registered UPI handle or scan QR in test mode.</p>
+                  </div>
+                </label>
+
+                <!-- Cash on Delivery -->
+                <label class="flex items-start gap-3 p-3 rounded-xl border border-sage-border bg-white cursor-pointer hover:border-leaf transition-all">
+                  <input type="radio" name="payment_method" value="cod" class="mt-1 accent-forest">
+                  <div class="flex-1">
+                    <div class="flex items-center justify-between">
+                      <span class="font-bold text-forest">Cash on Delivery (COD)</span>
+                      <span class="bg-amber-100 text-amber-800 text-[10px] font-bold px-1.5 py-0.5 rounded">Payment Pending</span>
+                    </div>
+                    <p class="text-[11px] text-charcoal-muted mt-0.5">Pay via cash or UPI to the courier agent upon arrival.</p>
+                  </div>
+                </label>
+
+              </div>
+
+              <!-- Order Summary Mini breakdown -->
+              <div class="mt-6 pt-4 border-t border-sage-border space-y-1.5 text-xs">
+                <div class="flex justify-between text-charcoal-muted">
+                  <span>Items In Cart</span>
+                  <span id="checkout-items-count" class="font-semibold text-charcoal">0</span>
+                </div>
+                <div class="flex justify-between text-charcoal-muted">
+                  <span>Items Subtotal</span>
+                  <span id="checkout-subtotal" class="font-semibold text-charcoal">₹0.00</span>
+                </div>
+                <div class="flex justify-between text-charcoal-muted">
+                  <span>Delivery Charge</span>
+                  <span id="checkout-shipping" class="font-semibold text-charcoal">₹49.00</span>
+                </div>
+                <div class="flex justify-between text-sm font-extrabold text-forest pt-2 border-t border-sage-border">
+                  <span>Total Payable</span>
+                  <span id="checkout-grand-total">₹0.00</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-6 space-y-3">
+              <label class="flex items-start gap-2 cursor-pointer text-[11px] text-charcoal-muted">
+                <input type="checkbox" id="terms-consent" required class="mt-0.5 rounded text-forest focus:ring-leaf accent-forest">
+                <span>I agree to EcoNest's <a href="#" class="underline text-forest">Terms of Service</a> & <a href="#" class="underline text-forest">Zero-Waste Privacy Policy</a>.</span>
+              </label>
+
+              <button 
+                type="submit" 
+                id="place-order-submit-btn" 
+                class="w-full bg-forest hover:bg-forest-light text-white py-3 rounded-xl font-bold text-sm shadow-lg transition-all flex items-center justify-center gap-2 active:scale-98"
+              >
+                <i data-lucide="lock" class="w-4 h-4 text-leaf-light"></i>
+                <span id="checkout-button-label">Authorize & Place Order</span>
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Simulated Razorpay / Payment Gateway Modal -->
+  <div id="payment-gateway-modal" class="fixed inset-0 z-50 hidden overflow-y-auto bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full overflow-hidden shadow-2xl border border-sage-border animate-in zoom-in duration-200">
+      
+      <!-- Gateway Branding -->
+      <div class="bg-[#0c2340] text-white p-5 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded bg-blue-600 flex items-center justify-center font-bold text-sm">R</div>
+          <div>
+            <h4 class="text-sm font-bold tracking-tight">Razorpay Checkout <span class="bg-amber-400 text-black text-[9px] px-1.5 py-0.5 rounded font-extrabold ml-1 uppercase">Test Mode</span></h4>
+            <p class="text-[11px] text-blue-200">EcoNest Online Store</p>
+          </div>
+        </div>
+        <button onclick="closeGatewayModal(false)" class="text-gray-300 hover:text-white" aria-label="Cancel transaction">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="p-6 space-y-4">
+        <div class="flex items-center justify-between bg-slate-50 p-3 rounded-xl border border-slate-200">
+          <span class="text-xs text-charcoal-muted">Amount to Pay</span>
+          <span id="gateway-amount" class="text-lg font-extrabold text-forest">₹0.00</span>
+        </div>
+
+        <div id="gateway-card-ui" class="space-y-3">
+          <p class="text-xs font-semibold text-charcoal">Demo Test Card Details (Pre-filled):</p>
+          <div class="p-3 bg-blue-50/70 border border-blue-200 rounded-xl space-y-2 text-xs">
+            <div class="flex justify-between">
+              <span class="text-blue-900 font-medium">Card:</span>
+              <span class="font-mono text-blue-950 font-bold">4111 •••• •••• 1111</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-blue-900 font-medium">Expiry:</span>
+              <span class="font-mono text-blue-950">12 / 28</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-blue-900 font-medium">CVV:</span>
+              <span class="font-mono text-blue-950">•••</span>
+            </div>
+          </div>
+          <p class="text-[11px] text-charcoal-muted">This is an authorized sandbox simulation. No actual bank charge will occur.</p>
+        </div>
+
+        <div id="gateway-upi-ui" class="space-y-3 hidden">
+          <p class="text-xs font-semibold text-charcoal">Simulated UPI App Approval:</p>
+          <div class="p-4 bg-emerald-50 border border-emerald-200 rounded-xl text-center space-y-2">
+            <div class="w-10 h-10 rounded-full bg-emerald-200 text-emerald-800 flex items-center justify-center mx-auto">
+              <i data-lucide="smartphone" class="w-5 h-5"></i>
+            </div>
+            <p class="text-xs font-bold text-emerald-950">UPI Collect Request Dispatched</p>
+            <p class="text-[11px] text-emerald-800">Handle: <strong id="gateway-upi-id">user@upi</strong></p>
+          </div>
+        </div>
+
+        <div class="pt-2 space-y-2">
+          <button 
+            id="gateway-confirm-btn" 
+            onclick="completeGatewayPayment(true)" 
+            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl text-xs transition-colors flex items-center justify-center gap-2 shadow"
+          >
+            <i data-lucide="check-circle" class="w-4 h-4"></i>
+            <span>Simulate Successful Payment</span>
+          </button>
+          <button 
+            onclick="completeGatewayPayment(false)" 
+            class="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-2 rounded-xl text-xs transition-colors"
+          >
+            Simulate Payment Failure
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Order Confirmation & Invoice Modal -->
+  <div id="order-success-modal" class="fixed inset-0 z-50 hidden overflow-y-auto bg-black/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4">
+    <div class="bg-white rounded-3xl max-w-3xl w-full overflow-hidden shadow-2xl border border-sage-border animate-in zoom-in duration-200 my-6">
+      
+      <!-- Success Top Banner -->
+      <div class="bg-forest text-cream p-6 text-center space-y-2 relative">
+        <div class="w-14 h-14 rounded-full bg-leaf text-white flex items-center justify-center mx-auto shadow-lg animate-bounce">
+          <i data-lucide="check" class="w-8 h-8"></i>
+        </div>
+        <h3 class="text-2xl font-extrabold text-white">Thank You for Your Order!</h3>
+        <p class="text-xs sm:text-sm text-sage max-w-md mx-auto">Your eco-conscious everyday products are being packed with care using 100% plastic-free materials.</p>
+        <span id="order-id-badge" class="inline-block bg-forest-dark text-sage-border px-3 py-1 rounded-full text-xs font-mono font-bold tracking-wider mt-2 border border-leaf/40">
+          ECO-20261009-0000
+        </span>
+      </div>
+
+      <!-- Printable Clean Invoice Container -->
+      <div id="printable-invoice" class="p-6 sm:p-8 space-y-6 bg-white text-charcoal text-xs">
+        
+        <!-- Store Header & Order Details -->
+        <div class="flex flex-col sm:flex-row justify-between items-start border-b border-sage-border pb-4 gap-4">
+          <div>
+            <div class="flex items-center gap-1.5 text-forest font-bold text-lg">
+              <i data-lucide="sprout" class="w-5 h-5 text-leaf"></i>
+              <span>EcoNest Store</span>
+            </div>
+            <p class="text-[11px] text-charcoal-muted mt-0.5">Sector 14, Green Tech Park, Bengaluru, KA - 560001</p>
+            <p class="text-[11px] text-charcoal-muted">GSTIN: 29AAAAE1234F1Z5 • support@econeststore.in</p>
+          </div>
+          <div class="sm:text-right">
+            <span class="font-bold text-forest text-sm uppercase">Tax Invoice</span>
+            <p class="text-[11px] text-charcoal-muted mt-0.5">Order ID: <strong id="inv-order-id" class="text-forest font-mono">ECO-0000</strong></p>
+            <p class="text-[11px] text-charcoal-muted">Date: <span id="inv-date">Oct 09, 2026</span></p>
+            <p class="text-[11px] font-semibold mt-1">Payment: <span id="inv-payment-badge" class="px-2 py-0.5 rounded text-[10px] bg-emerald-100 text-emerald-800">Paid</span></p>
+          </div>
+        </div>
+
+        <!-- Customer & Shipping Summary -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-cream p-4 rounded-xl border border-sage-border text-xs">
+          <div>
+            <span class="font-bold text-forest uppercase tracking-wider text-[10px]">Deliver To:</span>
+            <p id="inv-cust-name" class="font-bold text-charcoal mt-1">Customer Name</p>
+            <p id="inv-cust-address" class="text-charcoal-muted leading-tight mt-0.5">Address line</p>
+            <p id="inv-cust-contact" class="text-charcoal-muted mt-0.5">Phone: +91 9876543210</p>
+          </div>
+          <div>
+            <span class="font-bold text-forest uppercase tracking-wider text-[10px]">Estimated Delivery:</span>
+            <p id="inv-delivery-est" class="font-semibold text-leaf mt-1">3 - 5 Business Days</p>
+            <p class="text-[11px] text-charcoal-muted mt-0.5">Tracking details will be dispatched to <span id="inv-cust-email" class="text-charcoal font-medium">email</span> via SMS/WhatsApp.</p>
+          </div>
+        </div>
+
+        <!-- Itemized Products Table -->
+        <div>
+          <span class="font-bold text-forest uppercase tracking-wider text-[10px] mb-2 block">Order Items</span>
+          <div class="overflow-x-auto border border-sage-border rounded-xl">
+            <table class="w-full text-left border-collapse text-xs">
+              <thead class="bg-sage-soft text-forest font-bold uppercase text-[10px]">
+                <tr>
+                  <th class="p-2.5">#</th>
+                  <th class="p-2.5">Product Description</th>
+                  <th class="p-2.5">SKU</th>
+                  <th class="p-2.5 text-center">Qty</th>
+                  <th class="p-2.5 text-right">Unit Price</th>
+                  <th class="p-2.5 text-right">Line Total</th>
+                </tr>
+              </thead>
+              <tbody id="inv-items-body" class="divide-y divide-sage-border">
+                <!-- Injected via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Summary Totals Table -->
+        <div class="flex justify-end">
+          <div class="w-full sm:w-64 space-y-1.5 text-xs bg-cream p-3 rounded-xl border border-sage-border">
+            <div class="flex justify-between text-charcoal-muted">
+              <span>Subtotal:</span>
+              <span id="inv-subtotal" class="font-semibold text-charcoal">₹0.00</span>
+            </div>
+            <div class="flex justify-between text-charcoal-muted">
+              <span>Shipping Fee:</span>
+              <span id="inv-shipping" class="font-semibold text-charcoal">₹0.00</span>
+            </div>
+            <div class="flex justify-between text-xs font-bold text-forest pt-1.5 border-t border-sage-border">
+              <span>Grand Total:</span>
+              <span id="inv-grand-total">₹0.00</span>
+            </div>
+            <div class="flex justify-between text-[11px] text-charcoal-muted pt-1">
+              <span>Amount Paid:</span>
+              <span id="inv-paid-amt" class="font-semibold">₹0.00</span>
+            </div>
+            <div class="flex justify-between text-[11px] text-amber-800 font-bold" id="inv-outstanding-row">
+              <span>Outstanding:</span>
+              <span id="inv-outstanding-amt">₹0.00</span>
+            </div>
+          </div>
+        </div>
+
+        <p class="text-[11px] text-center text-charcoal-muted pt-2 border-t border-sage-border italic">
+          "Thank you for choosing sustainable products! For queries or returns within 7 days, email returns@econeststore.in."
+        </p>
+
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="p-5 bg-cream border-t border-sage-border flex flex-wrap items-center justify-between gap-3 no-print">
+        <button 
+          onclick="closeOrderSuccessModal()" 
+          class="text-xs font-bold text-forest hover:bg-sage-soft px-4 py-2.5 rounded-xl transition-colors"
+        >
+          ← Continue Shopping
+        </button>
+        <div class="flex gap-2">
+          <button 
+            onclick="window.print()" 
+            class="bg-white border border-sage-border text-charcoal hover:bg-sage-soft text-xs font-bold px-4 py-2.5 rounded-xl transition-all flex items-center gap-1.5 shadow-sm"
+          >
+            <i data-lucide="printer" class="w-3.5 h-3.5"></i>
+            <span>Print Invoice</span>
+          </button>
+          <button 
+            onclick="generatePDFInvoice()" 
+            class="bg-forest hover:bg-forest-light text-white text-xs font-bold px-4 py-2.5 rounded-xl transition-all flex items-center gap-1.5 shadow-md active:scale-95"
+          >
+            <i data-lucide="download" class="w-3.5 h-3.5 text-leaf-light"></i>
+            <span>Download Invoice PDF</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+    <div class="bg-forest text-white px-4 py-3 rounded-2xl shadow-xl flex items-center gap-3 border border-leaf/40 max-w-sm pointer-events-auto">
+      <div id="toast-icon" class="text-leaf-light">
+        <i data-lucide="check-circle" class="w-5 h-5"></i>
+      </div>
+      <div>
+        <p id="toast-title" class="text-xs font-bold text-white">Item added to cart</p>
+        <p id="toast-desc" class="text-[11px] text-sage">Your eco choices make a big difference!</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Clear Cart Confirmation Dialog -->
+  <div id="confirm-modal" class="fixed inset-0 z-50 hidden bg-black/50 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-sm w-full p-6 text-center space-y-4 shadow-2xl border border-sage-border">
+      <div class="w-12 h-12 rounded-full bg-red-100 text-red-600 flex items-center justify-center mx-auto">
+        <i data-lucide="alert-triangle" class="w-6 h-6"></i>
+      </div>
+      <h4 class="font-bold text-forest text-base">Clear your shopping cart?</h4>
+      <p class="text-xs text-charcoal-muted">All selected eco-friendly essentials will be removed from your order.</p>
+      <div class="flex gap-2 pt-2">
+        <button onclick="closeConfirmModal()" class="w-1/2 py-2 text-xs font-semibold rounded-xl border border-sage-border hover:bg-sage-soft">Cancel</button>
+        <button onclick="executeClearCart()" class="w-1/2 py-2 text-xs font-bold rounded-xl bg-red-600 text-white hover:bg-red-700 shadow">Clear Cart</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* Product Catalog Data (15+ products across 5 categories) */
+    const PRODUCTS = [
+      // 1. BAMBOO BOTTLES
+      {
+        id: 1,
+        name: "Eco Bamboo Water Bottle",
+        category: "bamboo-bottles",
+        categoryLabel: "Bamboo Bottles",
+        price: 499,
+        originalPrice: 599,
+        sku: "ECO-BOT-01",
+        image: "bottle.jpeg",
+        fallbackImage: "https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=600&q=80",
+        description: "100% natural organic bamboo exterior with a double-walled 304 food-grade stainless steel vacuum core. Keeps beverages iced for 24h or warm for 12h.",
+        rating: 4.8,
+        reviewsCount: 54,
+        stock: 14,
+        material: "Natural Bamboo & 304 Steel",
+        badge: "Best Seller"
+      },
+      {
+        id: 2,
+        name: "Natural Bamboo Flask",
+        category: "bamboo-bottles",
+        categoryLabel: "Bamboo Bottles",
+        price: 699,
+        originalPrice: 849,
+        sku: "ECO-BOT-02",
+        image: "bottle.jpeg",
+        fallbackImage: "https://images.unsplash.com/photo-1570572858059-e925c04b4c73?auto=format&fit=crop&w=600&q=80",
+        description: "Premium insulated tea and infusion flask featuring an integrated removable stainless steel mesh strainer for loose leaves and fruits.",
+        rating: 4.9,
+        reviewsCount: 88,
+        stock: 22,
+        material: "Organic Moso Bamboo",
+        badge: "Staff Pick"
+      },
+      {
+        id: 3,
+        name: "Bamboo Travel Bottle",
+        category: "bamboo-bottles",
+        categoryLabel: "Bamboo Bottles",
+        price: 599,
+        originalPrice: 699,
+        sku: "ECO-BOT-03",
+        image: "bottle.jpeg",
+        fallbackImage: "https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=600&q=80",
+        description: "Ergonomic slimline design built specifically to fit gym bags and car cup holders. Leakproof silicone sealing ring with zero microplastics.",
+        rating: 4.7,
+        reviewsCount: 39,
+        stock: 9,
+        material: "Sustainable Bamboo Outer",
+        badge: "Popular"
+      },
+
+      // 2. PRINTABLE STATIONERY
+      {
+        id: 4,
+        name: "Minimalist Weekly Planner PDF",
+        category: "printable-stationery",
+        categoryLabel: "Printable Stationery",
+        price: 99,
+        originalPrice: 149,
+        sku: "ECO-PRN-01",
+        image: "pages.jpg",
+        fallbackImage: "https://images.unsplash.com/photo-1586075010923-2dd4570fb338?auto=format&fit=crop&w=600&q=80",
+        description: "Zero-waste downloadable digital planner formatted for high-efficiency weekly layouts, habit trackers, and mindful goal setting. Print on demand or use on iPad.",
+        rating: 4.9,
+        reviewsCount: 112,
+        stock: 999, // Digital item
+        material: "Instant PDF Download",
+        badge: "Zero Footprint"
+      },
+      {
+        id: 5,
+        name: "Eco Study Planner PDF",
+        category: "printable-stationery",
+        categoryLabel: "Printable Stationery",
+        price: 149,
+        originalPrice: 199,
+        sku: "ECO-PRN-02",
+        image: "pages.jpg",
+        fallbackImage: "https://images.unsplash.com/photo-1517842645767-c639042777db?auto=format&fit=crop&w=600&q=80",
+        description: "Thoughtfully structured cute study journal page and assignment breakdown template. Illustrated with hand-drawn botanical borders.",
+        rating: 4.8,
+        reviewsCount: 46,
+        stock: 999,
+        material: "Print-Ready Vector PDF",
+        badge: "Student Deal"
+      },
+      {
+        id: 6,
+        name: "Printable To-Do List Bundle",
+        category: "printable-stationery",
+        categoryLabel: "Printable Stationery",
+        price: 79,
+        originalPrice: 119,
+        sku: "ECO-PRN-03",
+        image: "pages.jpg",
+        fallbackImage: "https://images.unsplash.com/photo-1506784983877-45594efa4cbe?auto=format&fit=crop&w=600&q=80",
+        description: "Pack of 12 distinct printable templates including daily priority matrix, grocery lists, water intake tracker, and mindfulness checklists.",
+        rating: 4.7,
+        reviewsCount: 65,
+        stock: 999,
+        material: "Eco Printable Bundle",
+        badge: "Budget Friendly"
+      },
+
+      // 3. ECO-FRIENDLY NOTEBOOKS
+      {
+        id: 7,
+        name: "Kraft Paper Notebook",
+        category: "eco-notebooks",
+        categoryLabel: "Eco Notebooks",
+        price: 199,
+        originalPrice: 249,
+        sku: "ECO-NBK-01",
+        image: "books.jpeg",
+        fallbackImage: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=600&q=80",
+        description: "Hardwearing unbleached recycled kraft paper cover with sturdy metal wire-o binding. 160 pages of recycled wood-free fountain-pen safe paper.",
+        rating: 4.8,
+        reviewsCount: 71,
+        stock: 35,
+        material: "100% Recycled Kraft Pulp",
+        badge: "Eco Hero"
+      },
+      {
+        id: 8,
+        name: "Recycled Paper Journal",
+        category: "eco-notebooks",
+        categoryLabel: "Eco Notebooks",
+        price: 249,
+        originalPrice: 299,
+        sku: "ECO-NBK-02",
+        image: "books.jpeg",
+        fallbackImage: "https://images.unsplash.com/photo-1531346878377-a5be20888e57?auto=format&fit=crop&w=600&q=80",
+        description: "Handcrafted unruled daily journal made from post-consumer cotton garment waste. Acid-free and completely tree-free stationery.",
+        rating: 4.9,
+        reviewsCount: 89,
+        stock: 24,
+        material: "Upcycled Cotton Rag",
+        badge: "Tree-Free"
+      },
+      {
+        id: 9,
+        name: "Sustainable Daily Diary",
+        category: "eco-notebooks",
+        categoryLabel: "Eco Notebooks",
+        price: 299,
+        originalPrice: 379,
+        sku: "ECO-NBK-03",
+        image: "books.jpeg",
+        fallbackImage: "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=600&q=80",
+        description: "Dated undated-hybrid daily planning notebook with ribbon bookmark and vegetable ink printing. Perfect companion for mindfulness routines.",
+        rating: 4.7,
+        reviewsCount: 42,
+        stock: 18,
+        material: "Soy-based Inks & Cardboard",
+        badge: "Artisan Made"
+      },
+
+      // 4. REUSABLE LUNCH BOXES
+      {
+        id: 10,
+        name: "Bamboo Lid Lunch Box",
+        category: "reusable-lunch-boxes",
+        categoryLabel: "Reusable Lunch Boxes",
+        price: 399,
+        originalPrice: 499,
+        sku: "ECO-LNB-01",
+        image: "box.jpeg",
+        fallbackImage: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80",
+        description: "Food-safe 304 stainless steel lunch container equipped with a laser-engraved solid bamboo lid that doubles as a chopping board and serving platter.",
+        rating: 4.9,
+        reviewsCount: 130,
+        stock: 19,
+        material: "Bamboo Lid & Food-Grade Steel",
+        badge: "Most Loved"
+      },
+      {
+        id: 11,
+        name: "Stainless Steel Bento Box",
+        category: "reusable-lunch-boxes",
+        categoryLabel: "Reusable Lunch Boxes",
+        price: 599,
+        originalPrice: 749,
+        sku: "ECO-LNB-02",
+        image: "box.jpeg",
+        fallbackImage: "https://images.unsplash.com/photo-1563865436874-9aef32095fad?auto=format&fit=crop&w=600&q=80",
+        description: "Three-compartment modular bento container designed to keep salads, dressings, and mains fresh and separated without single-use cling film.",
+        rating: 4.8,
+        reviewsCount: 78,
+        stock: 15,
+        material: "Rust-Proof Stainless Steel",
+        badge: "Leak-Resistant"
+      },
+      {
+        id: 12,
+        name: "Reusable Lunch Box Set",
+        category: "reusable-lunch-boxes",
+        categoryLabel: "Reusable Lunch Boxes",
+        price: 799,
+        originalPrice: 999,
+        sku: "ECO-LNB-03",
+        image: "box.jpeg",
+        fallbackImage: "https://images.unsplash.com/photo-1505253758473-96b3015f21c9?auto=format&fit=crop&w=600&q=80",
+        description: "Complete zero-waste meal bundle including the stainless container, bamboo lid, organic cotton carrying pouch, and bamboo cutlery fork & spoon.",
+        rating: 5.0,
+        reviewsCount: 92,
+        stock: 11,
+        material: "Bamboo + Steel + Cotton Pouch",
+        badge: "Complete Kit"
+      },
+
+      // 5. REUSABLE SHOPPING BAGS
+      {
+        id: 13,
+        name: "Organic Cotton Tote Bag",
+        category: "reusable-bags",
+        categoryLabel: "Reusable Bags",
+        price: 199,
+        originalPrice: 249,
+        sku: "ECO-BAG-01",
+        image: "reusable-bags-500x500.webp",
+        fallbackImage: "https://images.unsplash.com/photo-1597484661643-2f5fef640dd1?auto=format&fit=crop&w=600&q=80",
+        description: "Sturdy 280 GSM GOTS-certified organic cotton canvas tote featuring our signature 'GO GREEN' forest print with reinforced cross-stitched handles.",
+        rating: 4.8,
+        reviewsCount: 142,
+        stock: 50,
+        material: "100% GOTS Certified Cotton",
+        badge: "Essential"
+      },
+      {
+        id: 14,
+        name: "Foldable Grocery Bag",
+        category: "reusable-bags",
+        categoryLabel: "Reusable Bags",
+        price: 149,
+        originalPrice: 199,
+        sku: "ECO-BAG-02",
+        image: "reusable-bags-500x500.webp",
+        fallbackImage: "https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=600&q=80",
+        description: "Lightweight ripstop bag that folds into a tiny palm-sized pouch. Carries up to 15 kg of groceries comfortably on your shoulder.",
+        rating: 4.7,
+        reviewsCount: 68,
+        stock: 45,
+        material: "Recycled PET Fabric",
+        badge: "Everyday Carry"
+      },
+      {
+        id: 15,
+        name: "Premium Canvas Shopping Bag",
+        category: "reusable-bags",
+        categoryLabel: "Reusable Bags",
+        price: 299,
+        originalPrice: 399,
+        sku: "ECO-BAG-03",
+        image: "reusable-bags-500x500.webp",
+        fallbackImage: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=600&q=80",
+        description: "Heavyweight 400 GSM natural canvas shopper with interior zip pocket for keys and phone, wide bottom gusset, and brass magnetic closure.",
+        rating: 4.9,
+        reviewsCount: 84,
+        stock: 20,
+        material: "Heavy Unbleached Canvas",
+        badge: "Heavy Duty"
+      }
+    ];
+
+    // Shopping Cart State (Preserved via localStorage)
+    let cart = [];
+    let wishlist = [];
+    let currentFilter = 'all';
+    let currentSearchTerm = '';
+    let currentMaxPrice = 1000;
+    let currentSortOption = 'featured';
+    let inStockOnly = false;
+    let selectedModalProduct = null;
+    let modalQuantity = 1;
+    let currentOrderData = null; // Store for PDF & confirmation
+
+    // Pincode directory for instant auto-fill demonstration in India
+    const PINCODE_MAP = {
+      '560001': { city: 'Bengaluru', state: 'Karnataka' },
+      '400001': { city: 'Mumbai', state: 'Maharashtra' },
+      '110001': { city: 'New Delhi', state: 'Delhi' },
+      '600001': { city: 'Chennai', state: 'Tamil Nadu' },
+      '700001': { city: 'Kolkata', state: 'West Bengal' },
+      '360001': { city: 'Rajkot', state: 'Gujarat' },
+      '380001': { city: 'Ahmedabad', state: 'Gujarat' },
+      '500001': { city: 'Hyderabad', state: 'Telangana' },
+      '411001': { city: 'Pune', state: 'Maharashtra' }
+    };
+
+    // Load persisted state upon window initialization
+    window.addEventListener('DOMContentLoaded', () => {
+      loadCartFromStorage();
+      loadWishlistFromStorage();
+      renderCatalog();
+      updateCartUI();
+      lucide.createIcons();
+    });
+
+    function loadCartFromStorage() {
+      try {
+        const stored = localStorage.getItem('econest_cart');
+        if (stored) {
+          cart = JSON.parse(stored);
+        }
+      } catch (e) {
+        console.warn("Could not read cart from localStorage:", e);
+        cart = [];
+      }
+    }
+
+    function saveCartToStorage() {
+      try {
+        localStorage.setItem('econest_cart', JSON.stringify(cart));
+      } catch (e) {
+        console.warn("Could not save cart to localStorage:", e);
+      }
+    }
+
+    function loadWishlistFromStorage() {
+      try {
+        const stored = localStorage.getItem('econest_wishlist');
+        if (stored) wishlist = JSON.parse(stored);
+        updateWishlistBadge();
+      } catch (e) {
+        wishlist = [];
+      }
+    }
+
+    function renderCatalog() {
+      const container = document.getElementById('products-grid');
+      const emptyState = document.getElementById('empty-catalog-state');
+      if (!container) return;
+
+      // Filter products
+      let filtered = PRODUCTS.filter(item => {
+        // Category filter
+        if (currentFilter !== 'all' && item.category !== currentFilter) return false;
+        
+        // Price filter
+        if (item.price > currentMaxPrice) return false;
+
+        // In Stock filter
+        if (inStockOnly && item.stock <= 0) return false;
+
+        // Keyword Search filter
+        if (currentSearchTerm.trim() !== '') {
+          const q = currentSearchTerm.toLowerCase();
+          const matchName = item.name.toLowerCase().includes(q);
+          const matchDesc = item.description.toLowerCase().includes(q);
+          const matchCat = item.categoryLabel.toLowerCase().includes(q);
+          if (!matchName && !matchDesc && !matchCat) return false;
+        }
+
+        return true;
+      });
+
+      // Sort products
+      if (currentSortOption === 'price-low') {
+        filtered.sort((a, b) => a.price - b.price);
+      } else if (currentSortOption === 'price-high') {
+        filtered.sort((a, b) => b.price - a.price);
+      } else if (currentSortOption === 'rating') {
+        filtered.sort((a, b) => b.rating - a.rating);
+      } else if (currentSortOption === 'name-az') {
+        filtered.sort((a, b) => a.name.localeCompare(b.name));
+      }
+
+      // Update counters
+      document.getElementById('visible-count').innerText = filtered.length;
+      document.getElementById('active-filter-tag').innerText = 
+        currentFilter === 'all' ? 'All Categories' : PRODUCTS.find(p => p.category === currentFilter)?.categoryLabel || currentFilter;
+
+      if (filtered.length === 0) {
+        container.innerHTML = '';
+        emptyState.classList.remove('hidden');
+        return;
+      } else {
+        emptyState.classList.add('hidden');
+      }
+
+      // Generate HTML for each product card
+      container.innerHTML = filtered.map(item => {
+        const isWishlisted = wishlist.includes(item.id);
+        const discountPct = Math.round(((item.originalPrice - item.price) / item.originalPrice) * 100);
+
+        return `
+          <div class="group bg-white rounded-3xl p-4 border border-sage-border/90 shadow-sm hover:shadow-xl hover:border-leaf/40 transition-all duration-300 flex flex-col justify-between relative">
+            
+            <!-- Wishlist Heart Button -->
+            <button 
+              onclick="toggleWishlist(${item.id})" 
+              class="absolute top-6 right-6 z-10 w-8 h-8 rounded-full bg-white/90 backdrop-blur-sm border border-sage-border flex items-center justify-center text-charcoal hover:text-red-500 transition-colors shadow-xs"
+              aria-label="Save to wishlist"
+            >
+              <i data-lucide="heart" class="w-4 h-4 ${isWishlisted ? 'fill-red-500 text-red-500' : ''}"></i>
+            </button>
+
+            <!-- Card Top Image & Badges -->
+            <div>
+              <div class="relative w-full aspect-square rounded-2xl overflow-hidden bg-sage-soft mb-3 cursor-pointer" onclick="openProductModal(${item.id})">
+                <img 
+                  src="${item.image}" 
+                  alt="${item.name}" 
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  onerror="this.onerror=null; this.src='${item.fallbackImage}';"
+                >
+                <div class="absolute top-2.5 left-2.5 flex flex-col gap-1">
+                  ${item.badge ? `<span class="bg-forest text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full shadow-xs">${item.badge}</span>` : ''}
+                  <span class="bg-leaf text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-xs">Save ${discountPct}%</span>
+                </div>
+              </div>
+
+              <!-- Category & Rating -->
+              <div class="flex items-center justify-between text-[11px] mb-1">
+                <span class="font-semibold text-leaf tracking-wider uppercase">${item.categoryLabel}</span>
+                <div class="flex items-center gap-1 text-amber-500 font-bold">
+                  <span>★</span>
+                  <span>${item.rating}</span>
+                  <span class="text-charcoal-muted font-normal text-[10px]">(${item.reviewsCount})</span>
+                </div>
+              </div>
+
+              <!-- Title & Description -->
+              <h3 onclick="openProductModal(${item.id})" class="font-bold text-forest text-base leading-snug group-hover:text-leaf transition-colors cursor-pointer">
+                ${item.name}
+              </h3>
+              <p class="text-xs text-charcoal-muted mt-1 line-clamp-2 leading-relaxed">
+                ${item.description}
+              </p>
+            </div>
+
+            <!-- Card Bottom: Pricing & Actions -->
+            <div class="mt-4 pt-3 border-t border-sage-border/60">
+              <div class="flex items-baseline justify-between mb-3">
+                <div class="flex items-baseline gap-1.5">
+                  <span class="text-lg font-extrabold text-forest">₹${item.price}</span>
+                  <span class="text-xs text-charcoal-muted line-through">₹${item.originalPrice}</span>
+                </div>
+                <span class="text-[11px] font-semibold ${item.stock > 0 ? 'text-emerald-700' : 'text-red-500'}">
+                  ${item.stock > 0 ? (item.stock < 10 ? `Only ${item.stock} left` : 'In Stock') : 'Out of Stock'}
+                </span>
+              </div>
+
+              <div class="grid grid-cols-2 gap-2">
+                <button 
+                  onclick="openProductModal(${item.id})" 
+                  class="w-full py-2 px-3 rounded-xl border border-sage-border text-xs font-semibold text-forest hover:bg-sage-soft transition-colors text-center"
+                >
+                  View Details
+                </button>
+                <button 
+                  onclick="quickAddToCart(${item.id})" 
+                  class="w-full py-2 px-3 rounded-xl bg-forest hover:bg-forest-light text-white text-xs font-bold transition-all shadow-sm flex items-center justify-center gap-1 active:scale-95"
+                >
+                  <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+                  <span>Add Cart</span>
+                </button>
+              </div>
+            </div>
+
+          </div>
+        `;
+      }).join('');
+
+      lucide.createIcons();
+    }
+
+    function filterByCategory(categoryKey) {
+      currentFilter = categoryKey;
+      
+      // Update pill classes
+      document.querySelectorAll('.category-pill').forEach(pill => {
+        pill.classList.remove('bg-forest', 'text-white');
+        pill.classList.add('bg-sage-soft', 'text-forest');
+      });
+
+      const activeBtn = document.getElementById(`cat-pill-${categoryKey}`);
+      if (activeBtn) {
+        activeBtn.classList.remove('bg-sage-soft', 'text-forest');
+        activeBtn.classList.add('bg-forest', 'text-white');
+      }
+
+      renderCatalog();
+    }
+
+    function handleSearch(query) {
+      currentSearchTerm = query;
+      // Sync both desktop and mobile search inputs if present
+      const mainSearch = document.getElementById('catalog-search');
+      if (mainSearch && mainSearch.value !== query) mainSearch.value = query;
+      renderCatalog();
+    }
+
+    function handlePriceFilter(val) {
+      currentMaxPrice = parseInt(val, 10);
+      document.getElementById('price-slider-label').innerText = `₹${currentMaxPrice}`;
+      renderCatalog();
+    }
+
+    function handleSort(sortVal) {
+      currentSortOption = sortVal;
+      renderCatalog();
+    }
+
+    function applyFilters() {
+      inStockOnly = document.getElementById('stock-only').checked;
+      renderCatalog();
+    }
+
+    function resetFilters() {
+      currentFilter = 'all';
+      currentSearchTerm = '';
+      currentMaxPrice = 1000;
+      currentSortOption = 'featured';
+      inStockOnly = false;
+
+      document.getElementById('catalog-search').value = '';
+      document.getElementById('global-search-input').value = '';
+      document.getElementById('price-range').value = '1000';
+      document.getElementById('price-slider-label').innerText = '₹1,000';
+      document.getElementById('sort-select').value = 'featured';
+      document.getElementById('stock-only').checked = false;
+
+      filterByCategory('all');
+    }
+
+    function scrollToCatalog() {
+      const el = document.getElementById('catalog');
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function openProductModal(productId) {
+      const product = PRODUCTS.find(p => p.id === productId);
+      if (!product) return;
+
+      selectedModalProduct = product;
+      modalQuantity = 1;
+
+      document.getElementById('modal-product-title').innerText = product.name;
+      document.getElementById('modal-category-tag').innerText = product.categoryLabel;
+      document.getElementById('modal-sku').innerText = `SKU: ${product.sku}`;
+      document.getElementById('modal-price').innerText = `₹${product.price}`;
+      document.getElementById('modal-original-price').innerText = `₹${product.originalPrice}`;
+      document.getElementById('modal-description').innerText = product.description;
+      document.getElementById('modal-material').innerText = product.material;
+      document.getElementById('modal-rating-val').innerText = product.rating;
+      document.getElementById('modal-reviews-count').innerText = `(${product.reviewsCount} customer reviews)`;
+      document.getElementById('modal-qty-input').innerText = '1';
+      document.getElementById('modal-stock-status').innerText = product.stock > 0 
+        ? `In Stock (${product.stock} units ready for immediate shipping)`
+        : 'Currently Out of Stock';
+      
+      const img = document.getElementById('modal-product-img');
+      img.src = product.image;
+      img.onerror = () => { img.src = product.fallbackImage; };
+
+      // Set thumbnail alternatives
+      const thumbsContainer = document.getElementById('modal-thumbnails');
+      thumbsContainer.innerHTML = `
+        <button onclick="setModalMainImage('${product.image}', '${product.fallbackImage}')" class="w-12 h-12 rounded-lg border-2 border-leaf overflow-hidden bg-white">
+          <img src="${product.image}" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='${product.fallbackImage}'">
+        </button>
+        <button onclick="setModalMainImage('${product.fallbackImage}', '${product.image}')" class="w-12 h-12 rounded-lg border border-sage-border overflow-hidden bg-white">
+          <img src="${product.fallbackImage}" class="w-full h-full object-cover">
+        </button>
+      `;
+
+      document.getElementById('product-detail-modal').classList.remove('hidden');
+      document.body.classList.add('overflow-hidden');
+      lucide.createIcons();
+    }
+
+    function setModalMainImage(src, fallback) {
+      const img = document.getElementById('modal-product-img');
+      img.src = src;
+      img.onerror = () => { img.src = fallback; };
+    }
+
+    function closeProductModal() {
+      document.getElementById('product-detail-modal').classList.add('hidden');
+      document.body.classList.remove('overflow-hidden');
+    }
+
+    function adjustModalQty(delta) {
+      if (!selectedModalProduct) return;
+      const newQty = modalQuantity + delta;
+      if (newQty >= 1 && newQty <= selectedModalProduct.stock) {
+        modalQuantity = newQty;
+        document.getElementById('modal-qty-input').innerText = modalQuantity;
+      } else if (newQty > selectedModalProduct.stock) {
+        showToast("Maximum Available Stock", `Only ${selectedModalProduct.stock} items are available in stock.`, "alert-circle");
+      }
+    }
+
+    function addModalProductToCart() {
+      if (!selectedModalProduct) return;
+      addToCart(selectedModalProduct.id, modalQuantity);
+      closeProductModal();
+    }
+
+    function toggleCartDrawer(open) {
+      const drawer = document.getElementById('cart-drawer');
+      const panel = document.getElementById('cart-panel');
+      if (open) {
+        drawer.classList.remove('pointer-events-none', 'opacity-0');
+        drawer.classList.add('pointer-events-auto', 'opacity-100');
+        panel.classList.remove('translate-x-full');
+        panel.classList.add('translate-x-0');
+        document.body.classList.add('overflow-hidden');
+      } else {
+        drawer.classList.remove('pointer-events-auto', 'opacity-100');
+        drawer.classList.add('pointer-events-none', 'opacity-0');
+        panel.classList.remove('translate-x-0');
+        panel.classList.add('translate-x-full');
+        document.body.classList.remove('overflow-hidden');
+      }
+    }
+
+    function quickAddToCart(productId) {
+      addToCart(productId, 1);
+    }
+
+    function addToCart(productId, quantity = 1) {
+      const product = PRODUCTS.find(p => p.id === productId);
+      if (!product) return;
+
+      const existing = cart.find(item => item.id === productId);
+      if (existing) {
+        const potentialQty = existing.quantity + quantity;
+        if (potentialQty > product.stock) {
+          showToast("Stock Limit Reached", `Cannot add more than ${product.stock} units of ${product.name}.`, "alert-circle");
+          return;
+        }
+        existing.quantity = potentialQty;
+      } else {
+        cart.push({
+          id: product.id,
+          name: product.name,
+          price: product.price,
+          originalPrice: product.originalPrice,
+          image: product.image,
+          fallbackImage: product.fallbackImage,
+          sku: product.sku,
+          quantity: quantity
+        });
+      }
+
+      saveCartToStorage();
+      updateCartUI();
+      showToast("Added to Cart", `${product.name} (${quantity}) added to your eco bag.`);
+    }
+
+    function updateCartQuantity(productId, delta) {
+      const item = cart.find(i => i.id === productId);
+      const product = PRODUCTS.find(p => p.id === productId);
+      if (!item || !product) return;
+
+      const newQty = item.quantity + delta;
+      if (newQty <= 0) {
+        removeFromCart(productId);
+        return;
+      }
+      if (newQty > product.stock) {
+        showToast("Maximum Inventory", `Sorry, only ${product.stock} items are currently in stock.`, "alert-circle");
+        return;
+      }
+
+      item.quantity = newQty;
+      saveCartToStorage();
+      updateCartUI();
+    }
+
+    function removeFromCart(productId) {
+      cart = cart.filter(i => i.id !== productId);
+      saveCartToStorage();
+      updateCartUI();
+      showToast("Item Removed", "Product removed from your cart.", "info");
+    }
+
+    function promptClearCart() {
+      if (cart.length === 0) return;
+      document.getElementById('confirm-modal').classList.remove('hidden');
+    }
+
+    function closeConfirmModal() {
+      document.getElementById('confirm-modal').classList.add('hidden');
+    }
+
+    function executeClearCart() {
+      cart = [];
+      saveCartToStorage();
+      updateCartUI();
+      closeConfirmModal();
+      showToast("Cart Cleared", "All items have been removed.", "trash");
+    }
+
+    // Accurate calculation of subtotals and free shipping thresholds
+    function getCartCalculations() {
+      let subtotal = 0;
+      let totalCount = 0;
+
+      cart.forEach(item => {
+        // Enforce source-of-truth product pricing
+        const originalProduct = PRODUCTS.find(p => p.id === item.id);
+        const unitPrice = originalProduct ? originalProduct.price : item.price;
+        subtotal += unitPrice * item.quantity;
+        totalCount += item.quantity;
+      });
+
+      const freeShippingThreshold = 999;
+      const shipping = (subtotal >= freeShippingThreshold || subtotal === 0) ? 0 : 49;
+      const discount = 0; // Configurable promo hook
+      const grandTotal = subtotal + shipping - discount;
+
+      return { subtotal, shipping, discount, grandTotal, totalCount, freeShippingThreshold };
+    }
+
+    function updateCartUI() {
+      const { subtotal, shipping, discount, grandTotal, totalCount, freeShippingThreshold } = getCartCalculations();
+
+      // Update Nav Badges
+      const cartBadge = document.getElementById('cart-badge');
+      const cartNavTotal = document.getElementById('cart-nav-total');
+      const drawerItemCount = document.getElementById('drawer-item-count');
+
+      cartBadge.innerText = totalCount;
+      cartNavTotal.innerText = `₹${subtotal.toLocaleString('en-IN')}`;
+      drawerItemCount.innerText = `${totalCount} item${totalCount === 1 ? '' : 's'}`;
+
+      // Free shipping progress calculation
+      const progressText = document.getElementById('shipping-progress-text');
+      const progressBar = document.getElementById('shipping-progress-bar');
+      const progressPct = document.getElementById('shipping-progress-pct');
+
+      if (subtotal >= freeShippingThreshold) {
+        progressText.innerHTML = `🎉 You have unlocked <strong>FREE Shipping!</strong>`;
+        progressBar.style.width = '100%';
+        progressPct.innerText = '100%';
+      } else {
+        const remaining = freeShippingThreshold - subtotal;
+        const pct = Math.min(100, Math.round((subtotal / freeShippingThreshold) * 100));
+        progressText.innerHTML = `Add <strong>₹${remaining.toLocaleString('en-IN')}</strong> more for FREE Delivery`;
+        progressBar.style.width = `${pct}%`;
+        progressPct.innerText = `${pct}%`;
+      }
+
+      // Update Footers
+      document.getElementById('cart-subtotal-val').innerText = `₹${subtotal.toLocaleString('en-IN')}.00`;
+      document.getElementById('cart-shipping-val').innerText = shipping === 0 ? 'FREE' : `₹${shipping}.00`;
+      document.getElementById('cart-discount-val').innerText = `-₹${discount}.00`;
+      document.getElementById('cart-grand-val').innerText = `₹${grandTotal.toLocaleString('en-IN')}.00`;
+
+      // Render Item rows in Drawer
+      const itemsContainer = document.getElementById('cart-items-container');
+      const proceedBtn = document.getElementById('proceed-checkout-btn');
+
+      if (cart.length === 0) {
+        itemsContainer.innerHTML = `
+          <div class="text-center py-12 space-y-3">
+            <div class="w-14 h-14 rounded-full bg-sage-soft text-leaf flex items-center justify-center mx-auto">
+              <i data-lucide="shopping-bag" class="w-7 h-7"></i>
+            </div>
+            <h4 class="font-bold text-forest text-base">Your Eco Bag is Empty</h4>
+            <p class="text-xs text-charcoal-muted max-w-xs mx-auto">Help reduce single-use plastic by choosing our sustainable bamboo and recycled everyday items.</p>
+            <button onclick="toggleCartDrawer(false); scrollToCatalog();" class="mt-2 bg-forest text-white text-xs font-bold px-5 py-2 rounded-full hover:bg-forest-light transition-all">
+              Explore Store
+            </button>
+          </div>
+        `;
+        if (proceedBtn) proceedBtn.disabled = true;
+        proceedBtn.classList.add('opacity-50', 'cursor-not-allowed');
+      } else {
+        if (proceedBtn) proceedBtn.disabled = false;
+        proceedBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+
+        itemsContainer.innerHTML = cart.map(item => {
+          const itemSubtotal = item.price * item.quantity;
+          return `
+            <div class="flex gap-3 p-3 bg-white rounded-2xl border border-sage-border/80 shadow-xs items-center">
+              <div class="w-16 h-16 rounded-xl overflow-hidden bg-sage-soft shrink-0">
+                <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='${item.fallbackImage}';">
+              </div>
+              <div class="flex-1 min-w-0">
+                <h4 class="text-xs font-bold text-forest truncate">${item.name}</h4>
+                <p class="text-[11px] text-charcoal-muted">₹${item.price} each</p>
+                <div class="flex items-center justify-between mt-2">
+                  <div class="flex items-center border border-sage-border rounded-lg bg-cream">
+                    <button onclick="updateCartQuantity(${item.id}, -1)" class="px-2 py-0.5 text-xs text-charcoal hover:bg-sage font-bold">−</button>
+                    <span class="px-2 text-xs font-bold text-forest">${item.quantity}</span>
+                    <button onclick="updateCartQuantity(${item.id}, 1)" class="px-2 py-0.5 text-xs text-charcoal hover:bg-sage font-bold">+</button>
+                  </div>
+                  <span class="text-xs font-bold text-forest">₹${itemSubtotal.toLocaleString('en-IN')}</span>
+                </div>
+              </div>
+              <button onclick="removeFromCart(${item.id})" class="p-1 text-charcoal-muted hover:text-red-600 transition-colors" title="Remove item">
+                <i data-lucide="trash-2" class="w-4 h-4"></i>
+              </button>
+            </div>
+          `;
+        }).join('');
+      }
+
+      lucide.createIcons();
+    }
+
+    function toggleWishlist(productId) {
+      if (wishlist.includes(productId)) {
+        wishlist = wishlist.filter(id => id !== productId);
+        showToast("Removed from Wishlist", "Item removed from saved items.", "heart");
+      } else {
+        wishlist.push(productId);
+        showToast("Saved to Wishlist", "Item saved to your eco wish list.", "heart");
+      }
+      localStorage.setItem('econest_wishlist', JSON.stringify(wishlist));
+      updateWishlistBadge();
+      renderCatalog();
+    }
+
+    function updateWishlistBadge() {
+      const badge = document.getElementById('wishlist-badge');
+      if (badge) {
+        badge.innerText = wishlist.length;
+        if (wishlist.length > 0) badge.classList.remove('hidden');
+        else badge.classList.add('hidden');
+      }
+    }
+
+    function toggleWishlistDrawer() {
+      if (wishlist.length === 0) {
+        showToast("Wishlist is Empty", "Click the heart on any product to save it for later!", "heart");
+      } else {
+        showToast("Your Saved Items", `You have ${wishlist.length} item(s) saved in your eco favorites.`, "heart");
+      }
+    }
+
+    function openCheckoutModal() {
+      if (cart.length === 0) {
+        showToast("Cart is Empty", "Please add eco items before checking out.", "shopping-bag");
+        return;
+      }
+      toggleCartDrawer(false);
+
+      const { subtotal, shipping, grandTotal, totalCount } = getCartCalculations();
+      document.getElementById('checkout-items-count').innerText = `${totalCount} item(s)`;
+      document.getElementById('checkout-subtotal').innerText = `₹${subtotal.toLocaleString('en-IN')}.00`;
+      document.getElementById('checkout-shipping').innerText = shipping === 0 ? 'FREE' : `₹${shipping}.00`;
+      document.getElementById('checkout-grand-total').innerText = `₹${grandTotal.toLocaleString('en-IN')}.00`;
+
+      document.getElementById('checkout-modal').classList.remove('hidden');
+      document.body.classList.add('overflow-hidden');
+      lucide.createIcons();
+    }
+
+    function closeCheckoutModal() {
+      document.getElementById('checkout-modal').classList.add('hidden');
+      document.body.classList.remove('overflow-hidden');
+    }
+
+    function lookupPinCode(pincode) {
+      const hint = document.getElementById('pincode-hint');
+      if (pincode.length === 6 && PINCODE_MAP[pincode]) {
+        document.getElementById('cust-city').value = PINCODE_MAP[pincode].city;
+        document.getElementById('cust-state').value = PINCODE_MAP[pincode].state;
+        hint.innerText = `Detected: ${PINCODE_MAP[pincode].city}, ${PINCODE_MAP[pincode].state}`;
+      } else if (pincode.length === 6) {
+        hint.innerText = "PIN format valid (City / State auto-fill optional)";
+      }
+    }
+
+    function handleCheckoutSubmission(event) {
+      event.preventDefault();
+
+      const form = document.getElementById('checkout-form');
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+
+      const method = document.querySelector('input[name="payment_method"]:checked').value;
+      const { grandTotal } = getCartCalculations();
+
+      const customer = {
+        name: document.getElementById('cust-name').value.trim(),
+        email: document.getElementById('cust-email').value.trim(),
+        phone: document.getElementById('cust-phone').value.trim(),
+        address: document.getElementById('cust-address').value.trim(),
+        locality: document.getElementById('cust-locality').value.trim(),
+        city: document.getElementById('cust-city').value.trim(),
+        state: document.getElementById('cust-state').value.trim(),
+        pincode: document.getElementById('cust-pincode').value.trim(),
+        landmark: document.getElementById('cust-landmark').value.trim()
+      };
+
+      if (method === 'cod') {
+        // Place COD order directly
+        createFinalOrder(customer, 'Cash on Delivery', 'Pending (Collect on Delivery)', 0);
+      } else if (method === 'razorpay_online') {
+        // Open Razorpay Card Gateway Test Simulation
+        openGatewayModal(customer, 'card', grandTotal);
+      } else if (method === 'upi_gateway') {
+        // Open Razorpay UPI Gateway Test Simulation
+        openGatewayModal(customer, 'upi', grandTotal);
+      }
+    }
+
+    let activePendingCustomer = null;
+
+    function openGatewayModal(customer, type, amount) {
+      activePendingCustomer = customer;
+      document.getElementById('gateway-amount').innerText = `₹${amount.toLocaleString('en-IN')}.00`;
+
+      if (type === 'card') {
+        document.getElementById('gateway-card-ui').classList.remove('hidden');
+        document.getElementById('gateway-upi-ui').classList.add('hidden');
+      } else {
+        document.getElementById('gateway-card-ui').classList.add('hidden');
+        document.getElementById('gateway-upi-ui').classList.remove('hidden');
+        document.getElementById('gateway-upi-id').innerText = `${customer.phone}@upi`;
+      }
+
+      document.getElementById('payment-gateway-modal').classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function closeGatewayModal(proceed) {
+      document.getElementById('payment-gateway-modal').classList.add('hidden');
+    }
+
+    function completeGatewayPayment(isSuccess) {
+      closeGatewayModal();
+
+      if (isSuccess && activePendingCustomer) {
+        const { grandTotal } = getCartCalculations();
+        createFinalOrder(activePendingCustomer, 'Razorpay Online (Card / UPI)', 'Verified (Demo Paid)', grandTotal);
+      } else {
+        showToast("Payment Failed", "The simulated transaction was cancelled or declined. Please retry.", "alert-triangle");
+      }
+    }
+
+    function createFinalOrder(customer, paymentMethod, paymentStatus, amountPaid) {
+      const orderDate = new Date();
+      const randomSuffix = Math.floor(1000 + Math.random() * 9000);
+      const dateCode = orderDate.toISOString().slice(0, 10).replace(/-/g, '');
+      const orderId = `ECO-${dateCode}-${randomSuffix}`;
+
+      const { subtotal, shipping, discount, grandTotal } = getCartCalculations();
+
+      currentOrderData = {
+        orderId,
+        date: orderDate.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
+        customer,
+        items: [...cart],
+        subtotal,
+        shipping,
+        discount,
+        grandTotal,
+        paymentMethod,
+        paymentStatus,
+        amountPaid: amountPaid,
+        outstanding: grandTotal - amountPaid
+      };
+
+      // Populate Invoice DOM
+      document.getElementById('order-id-badge').innerText = orderId;
+      document.getElementById('inv-order-id').innerText = orderId;
+      document.getElementById('inv-date').innerText = currentOrderData.date;
+      document.getElementById('inv-cust-name').innerText = customer.name;
+      document.getElementById('inv-cust-address').innerText = `${customer.address}, ${customer.locality}, ${customer.city}, ${customer.state} - ${customer.pincode}`;
+      document.getElementById('inv-cust-contact').innerText = `Phone: +91 ${customer.phone}`;
+      document.getElementById('inv-cust-email').innerText = customer.email;
+
+      const badgeEl = document.getElementById('inv-payment-badge');
+      badgeEl.innerText = `${paymentMethod} • ${paymentStatus}`;
+      if (paymentStatus.includes('Verified')) {
+        badgeEl.className = 'px-2 py-0.5 rounded text-[10px] bg-emerald-100 text-emerald-800 font-bold';
+      } else {
+        badgeEl.className = 'px-2 py-0.5 rounded text-[10px] bg-amber-100 text-amber-800 font-bold';
+      }
+
+      // Populate items table
+      const itemsBody = document.getElementById('inv-items-body');
+      itemsBody.innerHTML = currentOrderData.items.map((item, idx) => {
+        const lineTotal = item.price * item.quantity;
+        return `
+          <tr class="hover:bg-cream/40">
+            <td class="p-2.5 text-charcoal-muted">${idx + 1}</td>
+            <td class="p-2.5 font-semibold text-forest">${item.name}</td>
+            <td class="p-2.5 text-charcoal-muted font-mono text-[10px]">${item.sku}</td>
+            <td class="p-2.5 text-center font-bold">${item.quantity}</td>
+            <td class="p-2.5 text-right font-medium">₹${item.price.toLocaleString('en-IN')}</td>
+            <td class="p-2.5 text-right font-bold text-forest">₹${lineTotal.toLocaleString('en-IN')}</td>
+          </tr>
+        `;
+      }).join('');
+
+      document.getElementById('inv-subtotal').innerText = `₹${subtotal.toLocaleString('en-IN')}.00`;
+      document.getElementById('inv-shipping').innerText = shipping === 0 ? 'FREE' : `₹${shipping}.00`;
+      document.getElementById('inv-grand-total').innerText = `₹${grandTotal.toLocaleString('en-IN')}.00`;
+      document.getElementById('inv-paid-amt').innerText = `₹${amountPaid.toLocaleString('en-IN')}.00`;
+      document.getElementById('inv-outstanding-amt').innerText = `₹${(grandTotal - amountPaid).toLocaleString('en-IN')}.00`;
+
+      // Clear Shopping Cart upon successful order placement
+      cart = [];
+      saveCartToStorage();
+      updateCartUI();
+
+      // Switch Modals
+      closeCheckoutModal();
+      document.getElementById('order-success-modal').classList.remove('hidden');
+      document.body.classList.add('overflow-hidden');
+      lucide.createIcons();
+    }
+
+    function closeOrderSuccessModal() {
+      document.getElementById('order-success-modal').classList.add('hidden');
+      document.body.classList.remove('overflow-hidden');
+    }
+
+    function generatePDFInvoice() {
+      if (!currentOrderData) {
+        showToast("Error", "No active invoice data found to generate PDF.", "alert-triangle");
+        return;
+      }
+
+      try {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF({
+          orientation: 'portrait',
+          unit: 'mm',
+          format: 'a4'
+        });
+
+        const greenPrimary = [27, 67, 50];    // #1B4332 Forest Green
+        const greenSecondary = [64, 145, 108]; // #40916C Leaf Green
+        const grayMuted = [100, 116, 139];
+
+        // Header Background Banner
+        doc.setFillColor(27, 67, 50);
+        doc.rect(0, 0, 210, 38, 'F');
+
+        // Store Logo / Name
+        doc.setTextColor(255, 255, 255);
+        doc.setFontSize(22);
+        doc.setFont('helvetica', 'bold');
+        doc.text("EcoNest", 14, 18);
+
+        doc.setFontSize(9);
+        doc.setFont('helvetica', 'normal');
+        doc.text("ECO-FRIENDLY PRODUCTS STORE • SUSTAINABLE LIVING", 14, 25);
+        doc.text("Sector 14, Green Tech Park, Bengaluru, KA - 560001 | support@econeststore.in", 14, 31);
+
+        // Invoice Header Title Right Aligned
+        doc.setFontSize(16);
+        doc.setFont('helvetica', 'bold');
+        doc.text("TAX INVOICE", 196, 18, { align: 'right' });
+        doc.setFontSize(9);
+        doc.setFont('helvetica', 'normal');
+        doc.text(`Invoice ID: ${currentOrderData.orderId}`, 196, 25, { align: 'right' });
+        doc.text(`Date: ${currentOrderData.date}`, 196, 31, { align: 'right' });
+
+        // Bill To & Order Summary Box
+        doc.setTextColor(27, 67, 50);
+        doc.setFontSize(11);
+        doc.setFont('helvetica', 'bold');
+        doc.text("BILL & SHIP TO:", 14, 48);
+
+        doc.setTextColor(45, 55, 72);
+        doc.setFontSize(9);
+        doc.setFont('helvetica', 'bold');
+        doc.text(currentOrderData.customer.name, 14, 54);
+        doc.setFont('helvetica', 'normal');
+        doc.text(`${currentOrderData.customer.address}, ${currentOrderData.customer.locality}`, 14, 59);
+        doc.text(`${currentOrderData.customer.city}, ${currentOrderData.customer.state} - ${currentOrderData.customer.pincode}`, 14, 64);
+        doc.text(`Phone: +91 ${currentOrderData.customer.phone} | Email: ${currentOrderData.customer.email}`, 14, 69);
+
+        // Payment status block
+        doc.setTextColor(27, 67, 50);
+        doc.setFontSize(11);
+        doc.setFont('helvetica', 'bold');
+        doc.text("PAYMENT SUMMARY:", 125, 48);
+
+        doc.setTextColor(45, 55, 72);
+        doc.setFontSize(9);
+        doc.setFont('helvetica', 'normal');
+        doc.text(`Payment Mode: ${currentOrderData.paymentMethod}`, 125, 54);
+        doc.text(`Payment Status: ${currentOrderData.paymentStatus}`, 125, 59);
+        doc.text(`Est. Delivery: 3 - 5 Business Days (Carbon Neutral)`, 125, 64);
+
+        // AutoTable Table Construction
+        const tableData = currentOrderData.items.map((item, idx) => [
+          idx + 1,
+          item.name,
+          item.sku,
+          item.quantity,
+          `INR ${item.price.toFixed(2)}`,
+          `INR ${(item.price * item.quantity).toFixed(2)}`
+        ]);
+
+        doc.autoTable({
+          startY: 76,
+          head: [['#', 'Item Description', 'SKU', 'Qty', 'Unit Price', 'Total']],
+          body: tableData,
+          theme: 'grid',
+          headStyles: {
+            fillColor: [27, 67, 50],
+            textColor: [255, 255, 255],
+            fontStyle: 'bold',
+            fontSize: 9
+          },
+          bodyStyles: {
+            fontSize: 8.5,
+            textColor: [45, 55, 72]
+          },
+          columnStyles: {
+            0: { cellWidth: 10, halign: 'center' },
+            1: { cellWidth: 70 },
+            2: { cellWidth: 28 },
+            3: { cellWidth: 15, halign: 'center' },
+            4: { cellWidth: 32, halign: 'right' },
+            5: { cellWidth: 35, halign: 'right' }
+          },
+          margin: { left: 14, right: 14 }
+        });
+
+        // Totals Box below Table
+        const finalY = doc.lastAutoTable.finalY + 8;
+        const totalX = 135;
+
+        doc.setFontSize(9);
+        doc.setFont('helvetica', 'normal');
+        doc.text("Subtotal:", totalX, finalY);
+        doc.text(`INR ${currentOrderData.subtotal.toFixed(2)}`, 196, finalY, { align: 'right' });
+
+        doc.text("Shipping Fee:", totalX, finalY + 6);
+        doc.text(currentOrderData.shipping === 0 ? "FREE" : `INR ${currentOrderData.shipping.toFixed(2)}`, 196, finalY + 6, { align: 'right' });
+
+        doc.setDrawColor(200, 200, 200);
+        doc.line(totalX, finalY + 9, 196, finalY + 9);
+
+        doc.setFontSize(11);
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(27, 67, 50);
+        doc.text("Grand Total:", totalX, finalY + 15);
+        doc.text(`INR ${currentOrderData.grandTotal.toFixed(2)}`, 196, finalY + 15, { align: 'right' });
+
+        doc.setFontSize(8.5);
+        doc.setFont('helvetica', 'normal');
+        doc.setTextColor(100, 116, 139);
+        doc.text(`Amount Paid: INR ${currentOrderData.amountPaid.toFixed(2)}`, totalX, finalY + 21);
+        doc.text(`Balance Due: INR ${currentOrderData.outstanding.toFixed(2)}`, totalX, finalY + 26);
+
+        // Eco-Friendly Message Footer
+        doc.setDrawColor(64, 145, 108);
+        doc.setLineWidth(0.5);
+        doc.line(14, 272, 196, 272);
+
+        doc.setFontSize(8);
+        doc.setTextColor(27, 67, 50);
+        doc.setFont('helvetica', 'bold');
+        doc.text("Thank you for choosing sustainable, plastic-free alternatives!", 105, 277, { align: 'center' });
+        doc.setFont('helvetica', 'normal');
+        doc.setTextColor(100, 116, 139);
+        doc.text("EcoNest Returns & Customer Care: returns@econeststore.in | 7-day hassle-free exchange on manufacturing defects.", 105, 282, { align: 'center' });
+
+        // Save and trigger browser download
+        doc.save(`EcoNest-Invoice-${currentOrderData.orderId}.pdf`);
+        showToast("PDF Downloaded", "Official tax invoice PDF has been saved.", "download");
+      } catch (err) {
+        console.error("PDF generation failed:", err);
+        showToast("Download Error", "Could not create PDF file. Please use the Print option.", "alert-triangle");
+      }
+    }
+
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobile-menu');
+      menu.classList.toggle('hidden');
+    }
+
+    let toastTimeout = null;
+    function showToast(title, desc = '', iconType = 'check-circle') {
+      const toast = document.getElementById('toast');
+      const toastTitle = document.getElementById('toast-title');
+      const toastDesc = document.getElementById('toast-desc');
+      const toastIcon = document.getElementById('toast-icon');
+
+      toastTitle.innerText = title;
+      toastDesc.innerText = desc;
+
+      let iconHtml = '<i data-lucide="check-circle" class="w-5 h-5"></i>';
+      if (iconType === 'alert-circle' || iconType === 'alert-triangle') {
+        iconHtml = '<i data-lucide="alert-circle" class="w-5 h-5 text-amber-400"></i>';
+      } else if (iconType === 'trash') {
+        iconHtml = '<i data-lucide="trash-2" class="w-5 h-5 text-red-400"></i>';
+      } else if (iconType === 'heart') {
+        iconHtml = '<i data-lucide="heart" class="w-5 h-5 text-red-400 fill-red-400"></i>';
+      } else if (iconType === 'download') {
+        iconHtml = '<i data-lucide="download" class="w-5 h-5 text-leaf-light"></i>';
+      }
+      toastIcon.innerHTML = iconHtml;
+      lucide.createIcons();
+
+      toast.classList.remove('translate-y-20', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+
+      if (toastTimeout) clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toast.classList.remove('translate-y-0', 'opacity-100');
+        toast.classList.add('translate-y-20', 'opacity-0');
+      }, 3500);
+    }
+
+    function handleNewsletterSubmit(e) {
+      e.preventDefault();
+      const input = document.getElementById('newsletter-email');
+      if (input && input.value) {
+        showToast("Subscribed to EcoNest", "Thank you for joining our community of conscious changemakers!", "check-circle");
+        input.value = '';
+      }
+    }
+
+    // Keyboard support: Escape closes active modals
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeProductModal();
+        closeCheckoutModal();
+        closeGatewayModal();
+        closeConfirmModal();
+        toggleCartDrawer(false);
+      }
+    });
+  </script>
+</body>
+</html>
